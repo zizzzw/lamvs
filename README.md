@@ -2,4 +2,4 @@
 Linux kernel Architecture Modelling and Verification System
 
 
-本系统可验证Linux内核设计是否满足需求，主要验证其类型间关系，在设计阶段今早发现错误。
+本系统可验证Linux内核设计是否满足需求，主要验证其类型间关系，在较早的设计阶段发现错误，降低成本。
