@@ -53,7 +53,7 @@ download the code, run in the idea. Enter the following link in the browser:
 7 一键验证，报告
 	http://localhost:8080/globalVerify
 	
-	显示报告页面：【前提是把repId在js中设置好】
+显示报告页面：【前提是把repId在js中设置好】
 	http://localhost:8080/veri_reportShow
 	
 
