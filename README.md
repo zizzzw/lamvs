@@ -30,32 +30,34 @@ Demands and designing data of QiHang Kernel extracted automatically by tools.
 
 ## Run
 
-download the code, run in the idea. Enter the following link in the browser:
+download the code, run in the IntelliJ IDEA. Enter the following link in the browser, auto verify will start:
+```
+http://localhost:8080/autoVerify
+```
 
-1 从代码导入design表
+Actually, the same effect can be achieve by enter the following link in sequence:
+```
+1 import design from code
 	http://localhost:8080/importDesign?pro=7
 	
-2 完善Type和List表
+2 fihish type and list table
 	http://localhost:8080/finishType?pro=7
 
-3 导入demand的txt
+3 import demand(.txt)
 	http://localhost:8080/importDemand?pro=7
 	
-4 完善Demand表
+4 finish demand table
 	http://localhost:8080/finishDemand
 
-5 关系生成
+5 relation generate
 	http://localhost:8080/relationGenerate?relationClassify=-1
 
-6 include文件自检+完善【调用验证需要】
+6 include check 
 	http://localhost:8080/selfCheckInclude?pro=7
 
-7 一键验证，报告
+7 global verify and show the report
 	http://localhost:8080/globalVerify
-	
-显示报告页面：【前提是把repId在js中设置好】
-	http://localhost:8080/veri_reportShow
-	
+```
 
 
 ## Example1: VFS
