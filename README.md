@@ -15,13 +15,17 @@ JEE Framework: SpringBoot
 Data Base: mysql
 
 ### Directory Introduction
-**-source：**
+**-code: **
 Java source code of LAMVS.
 
-**-data:** 
+**-examples: **
+
+C code of two examples(VFS and QiHang Kernel), tools extract design from here. 
+
+**-data: **
 Demands and designing data of QiHang Kernel extracted automatically by tools.
 
-**-tools：**
+**-tools: **
 
 (1)Import Design from Linux Code Tool(IDLT): Write by our team, use regular expressions and other methods to extract designing data from the Linux Kernel source code.
 
@@ -37,7 +41,7 @@ http://localhost:8080/autoVerify
 
 Actually, the same effect can be achieve by enter the following link in sequence:
 ```
-1 import design from code
+1 import design from linux code
 	http://localhost:8080/importDesign?pro=7
 	
 2 fihish type and list table
