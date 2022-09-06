@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>模型自检</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="类型管理"/>
+    <meta name="keywords" content="类型管理"/>
+
+
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content=""/>
+    <meta name="twitter:image" content=""/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:card" content=""/>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/flexslider.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/fileUpLoad.css">
+    <link rel="stylesheet" href="/css/m-nav.css">
+
+</head>
+<body>
+
+<div id="fh5co-page">
+    <header id="fh5co-header" role="banner"></header>
+    <div class="fh5co-page-title-m" style="background-image: url(images/slide_6.jpg);">
+        <div class="overlay"></div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!--左侧导航栏-->
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="/veri_selfCheck">模型自检</a></li>
+                    <li><a href="/veri_global">需求验证</a></li>
+                    <li><a href="/veri_part">局部验证</a></li>
+                    <li><a href="/veri_repStatis">统计结果</a></li>
+                </ul>
+            </div>
+            <!--右侧管理控制台-->
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-0 main">
+                <h1 class="page-header">模型自检</h1>
+                <div class="row align-items-right">
+                    <div class="col-md-12">
+                        <!--一组按钮控件-->
+                        <div class="col-md-8">
+                            <a class="btn btn-primary" href="/selfCheckInclude">Include自检</a>
+                            <a class="btn btn-primary" href="/selfCheckType?level=-1">层次类型自检</a>
+                            <a class="btn btn-primary" href="/selfCheckList">列表自检</a>
+                            <a class="btn btn-primary" href="/veri_reportShow">查看报告</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">类型表</h3>
+                            </div>
+                            <div class="panel-body">
+                                <!--<table class="table table-bordered table-hover purchase-table">-->
+                                <table class="table table-striped purchase-table1">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>层次</th>
+                                        <th>路径</th>
+                                        <th>名称</th>
+                                        <th>表达式</th>
+                                        <th>父类型</th>
+                                        <th>验证结果</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="showType"></tbody>
+                                </table>
+                                <div class="col-md-12 text-center animate-box" data-animate-effect="fadeIn">
+                                    <ul id="Pagination" class="pagination">这里显示分页</ul>
+                                    <br/>
+                                    <li id="index_total" style="list-style: none">30/60</li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="fh5co-footer" role="contentinfo"></footer>
+
+</div>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+<script src="/js/modernizr-2.6.2.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.flexslider-min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/jquery.pagination.js"></script>
+<script type="text/javascript">
+    var pageIndex = 0;
+    var totalElements = 1000;
+    var pageSize = 10;
+
+
+    $(function () {
+            $("#fh5co-header").load("/m_header");
+            $("#fh5co-footer").load("/foot");
+
+            //导航切换
+            $(".nav-sidebar li").click(function () {
+                $(".nav-sidebar li.active").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            First(pageIndex);
+            $("#Pagination").pagination(totalElements, {
+                callback: PageCallback,
+                items_per_page: pageSize,
+                prev_text: '上一页',
+                next_text: '下一页',
+                num_display_entries: 3,
+                num_edge_entries: 1,
+                link_to: "javascript:void(0)"
+            });
+
+            function PageCallback(index) {
+                Init(index);
+            }
+
+
+        }
+    );
+
+    function First(pageIndex) {
+        $.ajax({
+            type: "get",
+            url: "/showType?pageIndex=" + pageIndex + "&&pageSize=" + pageSize,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var totalPages = data.typePage.totalPages;
+                pageIndex = data.typePage.number;
+                totalElements = data.typePage.totalElements;
+                var typePage = data.typePage.content;
+                $("#showType").empty();
+                for (var i = 0; i < typePage.length; i++) {
+                    var obj = typePage[i];
+                    $("#showType").append('<tr><td>' + obj.id + '</td><td>' + obj.level + '</td><td>' + obj.path + '</td><td>' + obj.name + '</td><td>' + obj.exp + '</td><td>' + obj.father + '</td><td>' + obj.valid + '</td></tr>');
+                }
+
+                $("#index_total").text((pageIndex + 1) + '/' + totalPages);
+                $(".sidebar").height($(".main").height());
+
+            },
+            error: function () {
+                alert("请求超时，请重试！");
+            }
+        });
+
+    }
+
+    function Init(pageIndex) {
+        $.ajax({
+            type: "get",
+            url: "/showType?pageIndex=" + pageIndex + "&&pageSize=" + pageSize,
+            dataType: "json",
+            success: function (data) {
+                var totalPages = data.typePage.totalPages;
+                pageIndex = data.typePage.number;
+                totalElements = data.typePage.totalElements;
+
+                var typePage = data.typePage.content;
+
+                $("#showType").empty();
+                for (var i = 0; i < typePage.length; i++) {
+                    var obj = typePage[i];
+                    $("#showType").append('<tr><td>' + obj.id + '</td><td>' + obj.level + '</td><td>' + obj.path + '</td><td>' + obj.name + '</td><td>' + obj.exp + '</td><td>' + obj.father + '</td><td>' + obj.valid + '</td></tr>');
+                }
+
+                $("#index_total").text((pageIndex + 1) + '/' + totalPages);
+                $(".sidebar").height($(".main").height());
+
+            },
+            error: function () {
+                alert("请求超时，请重试！");
+            }
+        });
+
+    }
+
+    function typeCheck() {
+        $.ajax({
+            type: "get",
+            url: "/selfCheckType?level=-1",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                First(pageIndex);
+
+            },
+            error: function () {
+                alert("请求超时，请重试！");
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
