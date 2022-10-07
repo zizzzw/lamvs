@@ -42,7 +42,7 @@ Actually, the same effect can be achieve by enter the following link in sequence
 1 import design from linux code
 	http://localhost:8080/importDesign?pro=7
 	
-2 fihish type and list table
+2 finish type and list table
 	http://localhost:8080/finishType?pro=7
 
 3 import demand(.txt)
