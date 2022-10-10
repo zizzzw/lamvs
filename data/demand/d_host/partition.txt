@@ -1,0 +1,363 @@
+__phost_get_partition() <void __phost_get_partition (struct phost_partition *ptn) at partition.c:633>:
+    kref_get()
+__phost_put_partition() <void __phost_put_partition (struct phost_partition *ptn) at partition.c:652>:
+    kref_put()
+    __phost_destroy_partition() <void __phost_destroy_partition (struct kref *ref) at partition.c:639>:
+        container_of()
+        phost_partition
+        kthread_destroy_worker()
+        mutex_destroy()
+        free_pages_exact()
+        PHOST_TUNNEL_MAX_CONF_SIZE
+        kfree()
+        module_put()
+        THIS_MODULE
+copy_tunnels_to_user() <long copy_tunnels_to_user (struct phost_tunnel_basic_config __user *buffer, long partition_index, unsigned int user_count) at partition.c:534>:
+    ret
+    kernel_count
+    copy_count
+    copy_size
+    phost_search_partition() <struct phost_partition *phost_search_partition (int index) at partition.c:269>:
+        NULL
+        rcu_read_lock()
+        list_for_each_entry_rcu()
+        partition_host
+        partition_node
+        phost_get_partition()
+        rcu_read_unlock()
+    EINVAL
+    out
+    min()
+    free_ref
+    vmalloc()
+    ENOMEM
+    rcu_read_lock()
+    list_for_each_entry_rcu()
+    node
+    memmove()
+    rcu_read_unlock()
+    copy_to_user()
+    EFAULT
+    free_mem
+    vfree()
+    phost_put_partition()
+phost_attach_partition() <long phost_attach_partition (int index) at partition.c:585>:
+    r
+    phost_search_partition() <struct phost_partition *phost_search_partition (int index) at partition.c:269>:
+        NULL
+        rcu_read_lock()
+        list_for_each_entry_rcu()
+        partition_host
+        partition_node
+        phost_get_partition()
+        rcu_read_unlock()
+    EINVAL
+    mutex_lock()
+    EBUSY
+    out
+    mmgrab()
+    current
+    phost_partition_create_work_queue() <int phost_partition_create_work_queue (struct phost_partition *ptn) at partition.c:479>:
+        kzalloc()
+        GFP_KERNEL
+        sema_init()
+        kthread_init_worker()
+        kthread_run()
+        phost_tunnel_worker_fn() <int phost_tunnel_worker_fn (void *opaque) at partition.c:463>:
+            use_mm()
+            up()
+            kthread_worker_fn()
+            unuse_mm()
+        IS_ERR()
+        PTR_ERR()
+        stop_free
+        stop_tunnel
+        stop_consume
+        down()
+        kfree()
+        kthread_stop()
+    phost_partition_get_attached_fd() <int phost_partition_get_attached_fd (struct phost_partition *ptn) at partition.c:447>:
+        anon_inode_getfd()
+        phost_ptn_attached_fops <struct file_operations phost_ptn_attached_fops at partition.c:425>
+        O_RDWR
+    free_wq
+    mutex_unlock()
+    __phost_partition_destroy_work_queue() <void __phost_partition_destroy_work_queue (struct phost_partition *ptn) at partition.c:114>:
+        kthread_flush_worker()
+        __phost_partition_cancel_all_work() <void __phost_partition_cancel_all_work (struct phost_partition *ptn) at partition.c:54>:
+            spin_lock()
+            mutex_unlock()
+            list_empty()
+            list_first_entry()
+            phost_tunnel_work_struct
+            node
+            list_del_init()
+            spin_unlock()
+            kthread_cancel_work_sync()
+            kfree()
+            mutex_lock()
+        __cancel_wq() <inline void __cancel_wq (struct partition_worker *worker) at partition.c:106>:
+            kthread_stop()
+            NULL
+    mmdrop()
+    NULL
+    phost_put_partition()
+phost_create_partition() <long phost_create_partition (struct phost_partition_desc *desc) at partition.c:617>:
+    r
+    phost_alloc_partition() <struct phost_partition *phost_alloc_partition (void) at partition.c:17>:
+        size
+        kzalloc()
+        GFP_KERNEL
+        ERR_PTR()
+        ENOMEM
+        alloc_pages_exact()
+        __GFP_ZERO
+        free_ptn
+        PHOST_TUNNEL_MAX_CONF_SIZE
+        free_config
+        kref_init()
+        spin_lock_init()
+        mutex_init()
+        INIT_LIST_HEAD()
+        atomic_inc_return()
+        partition_host
+        kthread_create_worker()
+        IS_ERR()
+        PTR_ERR()
+        free_pages_exact()
+        kfree()
+    IS_ERR()
+    PTR_ERR()
+    strncpy()
+    PHOST_PARTITION_MAX_NAME_LEN
+    phost_partition_commit() <int phost_partition_commit (struct phost_partition *ptn) at partition.c:433>:
+        phost_register_partition()
+        phost_get_partition()
+        anon_inode_getfd()
+        phost_ptn_fops <struct file_operations phost_ptn_fops at partition.c:418>
+        O_RDWR
+        phost_put_partition()
+    phost_put_partition()
+phost_detach_partition() <long phost_detach_partition (int index) at partition.c:293>:
+    phost_search_partition() <struct phost_partition *phost_search_partition (int index) at partition.c:269>:
+        NULL
+        rcu_read_lock()
+        list_for_each_entry_rcu()
+        partition_host
+        partition_node
+        phost_get_partition()
+        rcu_read_unlock()
+    EINVAL
+    mutex_lock()
+    __phost_partition_destroy_work_queue() <void __phost_partition_destroy_work_queue (struct phost_partition *ptn) at partition.c:114>:
+        kthread_flush_worker()
+        __phost_partition_cancel_all_work() <void __phost_partition_cancel_all_work (struct phost_partition *ptn) at partition.c:54>:
+            spin_lock()
+            mutex_unlock()
+            list_empty()
+            list_first_entry()
+            phost_tunnel_work_struct
+            node
+            list_del_init()
+            spin_unlock()
+            kthread_cancel_work_sync()
+            kfree()
+            mutex_lock()
+        __cancel_wq() <inline void __cancel_wq (struct partition_worker *worker) at partition.c:106>:
+            kthread_stop()
+            NULL
+    mmdrop()
+    NULL
+    mutex_unlock()
+    phost_put_partition()
+phost_kill_partition() <long phost_kill_partition (int index) at partition.c:309>:
+    phost_search_partition() <struct phost_partition *phost_search_partition (int index) at partition.c:269>:
+        NULL
+        rcu_read_lock()
+        list_for_each_entry_rcu()
+        partition_host
+        partition_node
+        phost_get_partition()
+        rcu_read_unlock()
+    EINVAL
+    mutex_lock()
+    __phost_partition_destroy_work_queue() <void __phost_partition_destroy_work_queue (struct phost_partition *ptn) at partition.c:114>:
+        kthread_flush_worker()
+        __phost_partition_cancel_all_work() <void __phost_partition_cancel_all_work (struct phost_partition *ptn) at partition.c:54>:
+            spin_lock()
+            mutex_unlock()
+            list_empty()
+            list_first_entry()
+            phost_tunnel_work_struct
+            node
+            list_del_init()
+            spin_unlock()
+            kthread_cancel_work_sync()
+            kfree()
+            mutex_lock()
+        __cancel_wq() <inline void __cancel_wq (struct partition_worker *worker) at partition.c:106>:
+            kthread_stop()
+            NULL
+    __phost_partition_detach_all_tunnels() <void __phost_partition_detach_all_tunnels (struct phost_partition *ptn) at partition.c:285>:
+        list_for_each_entry_safe_reverse()
+        node
+        __phost_partition_detach_tunnel() <void __phost_partition_detach_tunnel (struct phost_tunnel_state *tunnel) at partition.c:176>:
+            BUG_ON()
+            list_del()
+            phost_put_tunnel()
+    phost_route_cancel()
+    mutex_unlock()
+    spin_lock()
+    partition_host
+    list_del_rcu()
+    spin_unlock()
+    phost_put_partition()
+phost_partition_add_tunnel_work() <long phost_partition_add_tunnel_work (struct phost_tunnel_state *tunnel, void (*work_fn) (struct kthread_work *)) at partition.c:88>:
+    r
+    ENOMEM
+    kmalloc()
+    GFP_KERNEL
+    kthread_init_work()
+    spin_lock()
+    list_add_tail()
+    spin_unlock()
+    kthread_queue_work()
+phost_partition_destroy_tunnel_work() <void phost_partition_destroy_tunnel_work (struct kthread_work *work) at partition.c:72>:
+    bool
+    should_free
+    container_of()
+    phost_tunnel_work_struct
+    spin_lock()
+    list_empty()
+    list_del()
+    spin_unlock()
+    kfree()
+phost_partition_ioctl() <long phost_partition_ioctl (struct file *filp, unsigned int ioctl, unsigned long arg) at partition.c:354>:
+    r
+    EINVAL
+    PHOST_PARTITION_CREATE_TUNNEL
+    phost_partition_create_tunnel() <long phost_partition_create_tunnel (struct phost_partition *ptn, int function) at partition.c:184>:
+        r
+        ENOMEM
+        mutex_lock()
+        phost_tunnel_get_driver()
+        IS_ERR()
+        PTR_ERR()
+        unlock_ptn
+        phost_tunnel_alloc()
+        put_driver
+        __phost_partition_add_tunnel() <int __phost_partition_add_tunnel (struct phost_partition *ptn, struct phost_tunnel_state *tunnel) at partition.c:154>:
+            index
+            __phost_partition_inc_tunnel_arr() <int __phost_partition_inc_tunnel_arr (struct phost_partition *ptn) at partition.c:130>:
+                index
+                old_size
+                new_size
+                alloc_pages_exact()
+                PHOST_TUNNEL_MAX_CONF_SIZE
+                GFP_KERNEL
+                __GFP_ZERO
+                ENOMEM
+                memmove()
+                list_for_each_entry()
+                node
+                mutex_lock()
+                mutex_unlock()
+                free_pages_exact()
+            list_add_tail()
+        phost_tunnel_init()
+        detach_tunnel
+        phost_tunnel_get_fd()
+        mutex_unlock()
+        __phost_partition_detach_tunnel() <void __phost_partition_detach_tunnel (struct phost_tunnel_state *tunnel) at partition.c:176>:
+            BUG_ON()
+            list_del()
+            phost_put_tunnel()
+        phost_tunnel_put_driver()
+    PHOST_PARTITION_ATTACH_TUNNEL
+    phost_partition_attach_tunnel() <long phost_partition_attach_tunnel (struct phost_partition *ptn, unsigned long index) at partition.c:247>:
+        r
+        mutex_lock()
+        EINVAL
+        out
+        __phost_partition_search_tunnel() <struct phost_tunnel_state *__phost_partition_search_tunnel (struct phost_partition *ptn, unsigned long index) at partition.c:234>:
+            list_for_each_entry()
+            node
+            phost_get_tunnel()
+            NULL
+        ENODEV
+        phost_tunnel_get_fd()
+        phost_put_tunnel()
+        mutex_unlock()
+    PHOST_PARTITION_GET_CONFIG_SIZE
+    phost_partition_get_config_size() <long phost_partition_get_config_size (struct phost_partition *ptn) at partition.c:327>:
+        BUILD_BUG_ON()
+        PAGE_SIZE
+        PHOST_TUNNEL_CONFIG_PAGE_OFFSET
+        PHOST_TUNNEL_MAX_CONF_SIZE
+    PHOST_PARTITION_RESET
+    phost_partition_reset() <long phost_partition_reset (struct phost_partition *ptn) at partition.c:343>:
+        mutex_lock()
+        __phost_partition_cancel_all_work() <void __phost_partition_cancel_all_work (struct phost_partition *ptn) at partition.c:54>:
+            spin_lock()
+            mutex_unlock()
+            list_empty()
+            list_first_entry()
+            phost_tunnel_work_struct
+            node
+            list_del_init()
+            spin_unlock()
+            kthread_cancel_work_sync()
+            kfree()
+            mutex_lock()
+        __phost_partition_reset_tunnels() <void __phost_partition_reset_tunnels (struct phost_partition *ptn) at partition.c:335>:
+            list_for_each_entry()
+            node
+            phost_tunnel_reset()
+        mutex_unlock()
+    PHOST_PARTITION_GET_INDEX
+phost_partition_mmap() <int phost_partition_mmap (struct file *filp, struct vm_area_struct *vma) at partition.c:410>:
+    VM_WRITE
+    EINVAL
+    phost_partition_vm_ops <struct vm_operations_struct phost_partition_vm_ops at partition.c:406>
+phost_partition_release() <int phost_partition_release (struct inode *inode, struct file *filp) at partition.c:123>:
+    phost_put_partition()
+phost_partition_remote_call() <int phost_partition_remote_call (int ptn_index, int tunnel_type, void (*fn) (struct phost_tunnel_state *tunnel, void *opaque), void *data) at partition.c:682>:
+    kmalloc()
+    GFP_KERNEL
+    ENOMEM
+    phost_search_partition() <struct phost_partition *phost_search_partition (int index) at partition.c:269>:
+        NULL
+        rcu_read_lock()
+        list_for_each_entry_rcu()
+        partition_host
+        partition_node
+        phost_get_partition()
+        rcu_read_unlock()
+    ENODEV
+    kthread_init_work()
+    remote_handler() <void remote_handler (struct kthread_work *work) at partition.c:667>:
+        container_of()
+        remote_work
+        __phost_partition_search_tunnel_by_function() <struct phost_tunnel_state *__phost_partition_search_tunnel_by_function (struct phost_partition *ptn, unsigned long type) at partition.c:220>:
+            list_for_each_entry()
+            node
+            phost_get_tunnel()
+            NULL
+        mutex_lock()
+        mutex_unlock()
+        phost_put_tunnel()
+        kfree()
+    kthread_queue_work()
+    phost_put_partition()
+phost_partition_vm_fault() <vm_fault_t phost_partition_vm_fault (struct vm_fault *vmf) at partition.c:379>:
+    n_tunnels
+    ptn_pg
+    round_up()
+    PAGE_SIZE
+    PAGE_SHIFT
+    tunnel_pg
+    PHOST_TUNNEL_MAX_CONF_SIZE
+    PHOST_TUNNEL_CONFIG_PAGE_OFFSET
+    virt_to_page()
+    pgoff
+    get_page()

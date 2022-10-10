@@ -1,0 +1,98 @@
+ring_hello_exit() <void __exit ring_hello_exit (void) at ring_hello.c:190>:
+    pguest_mm_tunnel_unregister_driver()
+    ring_hello_driver <struct pguest_mm_tunnel_driver ring_hello_driver at ring_hello.c:177>
+ring_hello_init() <int __init ring_hello_init (void) at ring_hello.c:185>:
+    pguest_mm_tunnel_register_driver()
+    ring_hello_driver <struct pguest_mm_tunnel_driver ring_hello_driver at ring_hello.c:177>
+ring_hello_irq_handler() <void ring_hello_irq_handler (struct pguest_mm_tunnel_dev *dev, uint32_t irq_status) at ring_hello.c:162>:
+    MM_INT_ERROR
+    ring_hello_handle_error() <void ring_hello_handle_error (struct pguest_mm_tunnel_dev *dev) at ring_hello.c:148>:
+        dev_get_drvdata()
+        uint32_t
+        error
+        tunnel_read32()
+        MM_CONFIG_TUNNEL_ERROR
+        TUNNEL_ERROR
+    MM_INT_DATA_HANDLED
+    ring_hello_handle_data() <void ring_hello_handle_data (struct pguest_mm_tunnel_dev *dev) at ring_hello.c:156>:
+        dev_get_drvdata()
+        pguest_ring_dequeue()
+    pr_warning()
+ring_hello_probe() <int ring_hello_probe (struct pguest_mm_tunnel_dev *dev) at ring_hello.c:101>:
+    ENOMEM
+    kzalloc()
+    GFP_KERNEL
+    spin_lock_init()
+    kthread_init_work()
+    generate_buf() <void generate_buf (struct kthread_work *w) at ring_hello.c:72>:
+        container_of()
+        ring_hello
+        work
+        __get_free_page()
+        GFP_KERNEL
+        __ring_hello_handle_data() <void __ring_hello_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at ring_hello.c:53>:
+            container_of()
+            ring_hello
+            buf
+            BUG_ON()
+            kasprintf()
+            GFP_KERNEL
+            spin_lock()
+            kfree()
+            spin_unlock()
+        __ring_hello_free_buf() <void __ring_hello_free_buf (struct pguest_ring *ring, void *opaque) at ring_hello.c:67>:
+            free_page()
+        pguest_ring_add_buf()
+        PAGE_SIZE
+        true
+        pguest_ring_notify()
+        mod_timer()
+        jiffies
+        msecs_to_jiffies()
+        POLL_INTERVAL
+    pguest_ring_alloc()
+    free_hello
+    ring_hello_create_proc() <int ring_hello_create_proc (struct ring_hello *hello) at ring_hello.c:38>:
+        dn
+        dev_name()
+        kasprintf()
+        GFP_KERNEL
+        ENOMEM
+        proc_create_single_data()
+        NULL
+        ring_hello_proc_show() <int ring_hello_proc_show (struct seq_file *m, void *data) at ring_hello.c:24>:
+            spin_lock()
+            TUNNEL_ERROR
+            spin_unlock()
+            seq_printf()
+        kfree()
+    destroy_ring
+    kthread_create_worker()
+    IS_ERR()
+    PTR_ERR()
+    destroy_proc
+    ring_hello_timer_init() <void ring_hello_timer_init (struct ring_hello *hello) at ring_hello.c:94>:
+        timer_setup()
+        ring_hello_generate_irq() <void ring_hello_generate_irq (struct timer_list *timer) at ring_hello.c:88>:
+            from_timer()
+            kthread_queue_work()
+        add_timer()
+        mod_timer()
+        jiffies
+        msecs_to_jiffies()
+        POLL_INTERVAL
+    dev_set_drvdata()
+    proc_remove()
+    pguest_ring_destroy()
+    kfree()
+ring_hello_remove() <void ring_hello_remove (struct pguest_mm_tunnel_dev *dev) at ring_hello.c:134>:
+    dev_get_drvdata()
+    kthread_destroy_worker()
+    proc_remove()
+    del_timer()
+    pguest_ring_destroy()
+    spin_lock()
+    kfree()
+    spin_unlock()
+    dev_set_drvdata()
+    NULL

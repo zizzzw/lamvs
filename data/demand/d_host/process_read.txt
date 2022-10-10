@@ -1,0 +1,49 @@
+read_request_data_producer_consumed_notifier() <void read_request_data_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at process_read.c:53>:
+    read_response_data_consumer_cb <const struct tunnel_route_cb read_response_data_consumer_cb at process_read.c:34>
+    phost_route_add_consumer()
+    PHOST_DATA_ROUTE
+    IS_ERR()
+    data_port_put()
+    pr_info()
+    ktime_get_real_ns()
+read_request_target_producer_cb <const struct tunnel_route_cb read_request_target_producer_cb at process_read.c:145>
+read_request_target_producer_consumed_notifier() <void read_request_target_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at process_read.c:131>:
+    read_response_target_consumer_cb <const struct tunnel_route_cb read_response_target_consumer_cb at process_read.c:125>
+    phost_route_add_consumer()
+    PHOST_DATA_ROUTE
+    IS_ERR()
+    data_port_put()
+    pr_info()
+read_response_data_consumer_consume() <ssize_t read_response_data_consumer_consume (struct data_port *self, struct data_port *other) at process_read.c:16>:
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+    pr_info()
+    ktime_get_real_ns()
+read_response_data_consumer_match() <int read_response_data_consumer_match (struct data_port *self, struct data_port *other) at process_read.c:6>:
+    PHOST_READ
+    PHOST_ACCEPT_READ
+read_response_data_producer_cb <const struct tunnel_route_cb read_response_data_producer_cb at process_read.c:48>
+read_response_data_producer_consumed_notifier() <void read_response_data_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at process_read.c:39>:
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+read_response_target_consumer_consume() <ssize_t read_response_target_consumer_consume (struct data_port *self, struct data_port *other) at process_read.c:83>:
+    NULL
+    read_request_data_producer_cb <const struct tunnel_route_cb read_request_data_producer_cb at process_read.c:69>
+    PHOST_SUCCESS
+    memcpy()
+    phost_route_add_producer()
+    PHOST_DATA_ROUTE
+    IS_ERR()
+    data_port_put()
+    insert_communication_element()
+    pr_info()
+    kzalloc()
+    GFP_KERNEL
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+    kfree()
+read_response_target_consumer_match() <int read_response_target_consumer_match (struct data_port *self, struct data_port *other) at process_read.c:74>

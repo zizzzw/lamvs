@@ -1,0 +1,23 @@
+tunnel_hello_consume() <void tunnel_hello_consume (struct phost_tunnel_state *tunnel) at tunnel_hello.c:25>:
+    snprintf()
+    phost_tunnel_get_shared()
+    PAGE_SIZE
+    __phost_tunnel_signal_user()
+tunnel_hello_exit() <void __exit tunnel_hello_exit (void) at tunnel_hello.c:61>:
+    phost_tunnel_unregister_driver()
+    tunnel_hello_driver <struct phost_tunnel_driver tunnel_hello_driver at tunnel_hello.c:45>
+tunnel_hello_init() <int __init tunnel_hello_init (void) at tunnel_hello.c:56>:
+    phost_tunnel_register_driver()
+    tunnel_hello_driver <struct phost_tunnel_driver tunnel_hello_driver at tunnel_hello.c:45>
+tunnel_hello_init_tunnel() <long tunnel_hello_init_tunnel (struct phost_tunnel_state *tunnel) at tunnel_hello.c:10>:
+    r
+    kzalloc()
+    GFP_KERNEL
+    ENOMEM
+    phost_tunnel_alloc_shared()
+    PAGE_SIZE
+    kfree()
+tunnel_hello_release() <void tunnel_hello_release (struct phost_tunnel_state *tunnel) at tunnel_hello.c:33>:
+    kfree()
+    phost_tunnel_free_shared()
+tunnel_hello_reset() <void tunnel_hello_reset (struct phost_tunnel_state *tunnel) at tunnel_hello.c:39>

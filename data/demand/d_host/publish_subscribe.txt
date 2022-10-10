@@ -1,0 +1,12 @@
+partition_consumer_consume() <ssize_t partition_consumer_consume (struct data_port *self, struct data_port *other) at publish_subscribe.c:13>:
+    memcpy()
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+partition_consumer_match() <int partition_consumer_match (struct data_port *self, struct data_port *other) at publish_subscribe.c:5>
+partition_producer_consumed_notifier() <void partition_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at publish_subscribe.c:42>:
+    publish_subscribe_consumer_cb <const struct tunnel_route_cb publish_subscribe_consumer_cb at publish_subscribe.c:37>
+    phost_route_add_consumer()
+    PHOST_DATA_ROUTE
+publish_subscribe_cb <const struct tunnel_route_cb publish_subscribe_cb at publish_subscribe.c:52>

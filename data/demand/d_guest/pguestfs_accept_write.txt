@@ -1,0 +1,45 @@
+pguest_transfer_data_accept_write() <void pguest_transfer_data_accept_write (void *opaque) at pguestfs_accept_write.c:51>:
+    write_info_length
+    write_data_length
+    NULL
+    __pguest_transfer_accept_write_handle_data() <void __pguest_transfer_accept_write_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at pguestfs_accept_write.c:31>:
+        PGUEST_RESOURCE_NONEXIST
+        __pguest_vfs_write() <ssize_t __pguest_vfs_write (void *opaque) at pguestfs_accept_write.c:5>:
+            ssize_t
+            ret
+            EFAULT
+            mm_segment_t
+            fs
+            pr_info()
+            filp_open()
+            O_WRONLY
+            IS_ERR()
+            pr_warning()
+            PTR_ERR()
+            get_fs()
+            set_fs()
+            KERNEL_DS
+            vfs_write()
+            filp_close()
+            NULL
+    __pguest_transfer_accept_write_free() <void __pguest_transfer_accept_write_free (struct pguest_ring *ring, void *opaque) at pguestfs_accept_write.c:42>:
+        kfree()
+    kzalloc()
+    GFP_KERNEL
+    pr_warning()
+    free_write_info
+    memcpy()
+    filp_open()
+    O_RDONLY
+    IS_ERR()
+    PTR_ERR()
+    PGUEST_RESOURCE_NONEXIST
+    PGUEST_ACCEPT_WRITE
+    free_write_data
+    sg_init_table()
+    pr_info()
+    sg_set_buf()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    kfree()

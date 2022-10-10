@@ -1,0 +1,99 @@
+fini() <void __exit fini (void) at core.c:239>:
+    synchronize_rcu()
+    BUG_ON()
+    list_empty()
+    partition_host <struct phost partition_host at core.c:27>
+    misc_deregister()
+    phost_dev <struct miscdevice phost_dev at core.c:210>
+    remove_proc_entry()
+    NULL
+init() <int __init init (void) at core.c:216>:
+    r
+    phost_partition_host_init() <int __init phost_partition_host_init (void) at core.c:64>:
+        __partition_host_init() <void __init __partition_host_init (void) at core.c:50>:
+            INIT_LIST_HEAD()
+            partition_host <struct phost partition_host at core.c:27>
+            spin_lock_init()
+        __host_init() <int __init __host_init (void) at core.c:56>:
+            phost_create_partition()
+    __close_fd()
+    current
+    misc_register()
+    phost_dev <struct miscdevice phost_dev at core.c:210>
+    pr_err()
+    out_fail
+    proc_create()
+    NULL
+    phost_proc_fops
+    misc_deregister()
+    ENOMEM
+phost_dev_ioctl() <long phost_dev_ioctl (struct file *filp, unsigned int ioctl, unsigned long arg) at core.c:111>:
+    r
+    EINVAL
+    PHOST_GET_API_VERSION
+    out
+    PHOST_API_VERSION
+    PHOST_CREATE_PARTITION
+    ENOMEM
+    memdup_user()
+    IS_ERR()
+    PTR_ERR()
+    NULL
+    phost_create_partition()
+    kfree()
+    PHOST_ATTACH_PARTITION
+    phost_attach_partition()
+    PHOST_DETACH_PARTITION
+    phost_detach_partition()
+    PHOST_KILL_PARTITION
+    phost_kill_partition()
+    PHOST_GET_PARTITION_NUM
+    atomic_read()
+    partition_host <struct phost partition_host at core.c:27>
+    PHOST_GET_PARTITIONS_CONFIG
+    get_all_partitions_config() <long get_all_partitions_config (unsigned int partition_count, struct phost_partition_config __user *partition_array) at core.c:70>:
+        ret
+        copy_count
+        cur_partition_count
+        copy_size
+        atomic_read()
+        partition_host <struct phost partition_host at core.c:27>
+        min()
+        out
+        vmalloc()
+        ENOMEM
+        rcu_read_lock()
+        list_for_each_entry_rcu()
+        partition_node
+        memmove()
+        rcu_read_unlock()
+        copy_to_user()
+        EFAULT
+        free_mem
+        vfree()
+    PHOST_GET_PARTITION_TUNNELS
+    copy_tunnels_to_user()
+phost_no_compat_ioctl() <long phost_no_compat_ioctl (struct file *filp, unsigned int ioctl, unsigned long arg) at core.c:19>:
+    EINVAL
+phost_proc_show() <int phost_proc_show (struct seq_file *m, void *v) at core.c:182>:
+    seq_printf()
+    rcu_read_lock()
+    list_for_each_entry_rcu()
+    partition_host <struct phost partition_host at core.c:27>
+    partition_node
+    node
+    rcu_read_unlock()
+phost_register_partition() <long phost_register_partition (struct phost_partition *ptn) at core.c:31>:
+    try_module_get()
+    THIS_MODULE
+    ENODEV
+    spin_lock()
+    partition_host <struct phost partition_host at core.c:27>
+    list_add_tail_rcu()
+    spin_unlock()
+phost_unregister_partition() <long phost_unregister_partition (struct phost_partition *ptn) at core.c:41>:
+    spin_lock()
+    partition_host <struct phost partition_host at core.c:27>
+    list_del_rcu()
+    spin_unlock()
+    phost_put_partition()

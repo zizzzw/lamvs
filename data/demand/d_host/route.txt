@@ -1,0 +1,469 @@
+data_port_stop_route() <void data_port_stop_route (struct data_port *port) at route.c:380>:
+    spin_lock()
+    DATA_PORT_SHOULD_STOP
+    phost_router <struct phost_router phost_router at route.c:36>
+    hlist_unhashed()
+    hash_del()
+    spin_unlock()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+phost_route_add_consumer() <struct data_port *phost_route_add_consumer (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb, int ptn_index, int tunnel_type) at route.c:357>:
+    uint64_t
+    target
+    MERGE_TO_UINT64()
+    __alloc_data_port() <struct data_port *__alloc_data_port (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb, uint64_t target) at route.c:273>:
+        kmalloc()
+        GFP_KERNEL
+        NULL
+        phost_get_tunnel()
+        INIT_HLIST_NODE()
+        kref_init()
+        spin_lock_init()
+        mmgrab()
+    ERR_PTR()
+    ENOMEM
+    DATA_PORT_IS_CONSUMER
+    data_port_get() <void data_port_get (struct data_port *port) at route.c:89>:
+        kref_get()
+    __phost_route_add_consumer() <int __phost_route_add_consumer (struct data_port *consumer) at route.c:261>:
+        phost_route_work_alloc() <struct route_work *phost_route_work_alloc (void) at route.c:70>:
+            kzalloc()
+            GFP_KERNEL
+            NULL
+            INIT_LIST_HEAD()
+        ENOMEM
+        __phost_route_add_consumer_with_work() <int __phost_route_add_consumer_with_work (struct data_port *consumer, struct route_work *work) at route.c:240>:
+            spin_lock()
+            phost_router <struct phost_router phost_router at route.c:36>
+            __phost_route_find_matched_producer() <struct data_port *__phost_route_find_matched_producer (struct data_port *consumer, uint64_t target) at route.c:103>:
+                uint32_t
+                function
+                phost_tunnel_function()
+                uint64_t
+                key
+                TUNNEL_TO_UINT64()
+                hash_for_each_possible_safe()
+                phost_router <struct phost_router phost_router at route.c:36>
+                node
+                ANY_MATCH
+                hash_del()
+                target_function
+                TUNNEL_PART()
+                target_ptn
+                PTN_PART()
+                phost_tunnel_partition_index()
+                NULL
+            phost_route_add_work() <void phost_route_add_work (struct route_work *work) at route.c:42>:
+                spin_lock()
+                phost_router <struct phost_router phost_router at route.c:36>
+                list_add_tail()
+                spin_unlock()
+            phost_tunnel_add_remote_data()
+            __add_consumer() <void __add_consumer (struct data_port *consumer) at route.c:197>:
+                ANY_MATCH
+                hash_add()
+                phost_router <struct phost_router phost_router at route.c:36>
+                phost_tunnel_function()
+            spin_unlock()
+        phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+            data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+                kref_put()
+                data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                    container_of()
+                    data_port
+                    phost_put_tunnel()
+                    mmdrop()
+                    kfree()
+            list_del_init()
+            kfree()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+phost_route_add_consumer_matched_any() <struct data_port *phost_route_add_consumer_matched_any (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb) at route.c:336>:
+    __alloc_data_port() <struct data_port *__alloc_data_port (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb, uint64_t target) at route.c:273>:
+        kmalloc()
+        GFP_KERNEL
+        NULL
+        phost_get_tunnel()
+        INIT_HLIST_NODE()
+        kref_init()
+        spin_lock_init()
+        mmgrab()
+    ANY_MATCH
+    ERR_PTR()
+    ENOMEM
+    DATA_PORT_IS_CONSUMER
+    data_port_get() <void data_port_get (struct data_port *port) at route.c:89>:
+        kref_get()
+    __phost_route_add_consumer() <int __phost_route_add_consumer (struct data_port *consumer) at route.c:261>:
+        phost_route_work_alloc() <struct route_work *phost_route_work_alloc (void) at route.c:70>:
+            kzalloc()
+            GFP_KERNEL
+            NULL
+            INIT_LIST_HEAD()
+        ENOMEM
+        __phost_route_add_consumer_with_work() <int __phost_route_add_consumer_with_work (struct data_port *consumer, struct route_work *work) at route.c:240>:
+            spin_lock()
+            phost_router <struct phost_router phost_router at route.c:36>
+            __phost_route_find_matched_producer() <struct data_port *__phost_route_find_matched_producer (struct data_port *consumer, uint64_t target) at route.c:103>:
+                uint32_t
+                function
+                phost_tunnel_function()
+                uint64_t
+                key
+                TUNNEL_TO_UINT64()
+                hash_for_each_possible_safe()
+                phost_router <struct phost_router phost_router at route.c:36>
+                node
+                ANY_MATCH
+                hash_del()
+                target_function
+                TUNNEL_PART()
+                target_ptn
+                PTN_PART()
+                phost_tunnel_partition_index()
+                NULL
+            phost_route_add_work() <void phost_route_add_work (struct route_work *work) at route.c:42>:
+                spin_lock()
+                phost_router <struct phost_router phost_router at route.c:36>
+                list_add_tail()
+                spin_unlock()
+            phost_tunnel_add_remote_data()
+            __add_consumer() <void __add_consumer (struct data_port *consumer) at route.c:197>:
+                ANY_MATCH
+                hash_add()
+                phost_router <struct phost_router phost_router at route.c:36>
+                phost_tunnel_function()
+            spin_unlock()
+        phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+            data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+                kref_put()
+                data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                    container_of()
+                    data_port
+                    phost_put_tunnel()
+                    mmdrop()
+                    kfree()
+            list_del_init()
+            kfree()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+phost_route_add_data_port() <int phost_route_add_data_port (struct data_port *port) at route.c:397>:
+    phost_route_work_alloc() <struct route_work *phost_route_work_alloc (void) at route.c:70>:
+        kzalloc()
+        GFP_KERNEL
+        NULL
+        INIT_LIST_HEAD()
+    ENOMEM
+    spin_lock()
+    DATA_PORT_SHOULD_STOP
+    phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+        data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+            kref_put()
+            data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                container_of()
+                data_port
+                phost_put_tunnel()
+                mmdrop()
+                kfree()
+        list_del_init()
+        kfree()
+    spin_unlock()
+    data_port_get() <void data_port_get (struct data_port *port) at route.c:89>:
+        kref_get()
+    DATA_PORT_IS_CONSUMED
+    DATA_PORT_IS_CONSUMER
+    __phost_route_add_consumer_with_work() <int __phost_route_add_consumer_with_work (struct data_port *consumer, struct route_work *work) at route.c:240>:
+        spin_lock()
+        phost_router <struct phost_router phost_router at route.c:36>
+        __phost_route_find_matched_producer() <struct data_port *__phost_route_find_matched_producer (struct data_port *consumer, uint64_t target) at route.c:103>:
+            uint32_t
+            function
+            phost_tunnel_function()
+            uint64_t
+            key
+            TUNNEL_TO_UINT64()
+            hash_for_each_possible_safe()
+            phost_router <struct phost_router phost_router at route.c:36>
+            node
+            ANY_MATCH
+            hash_del()
+            target_function
+            TUNNEL_PART()
+            target_ptn
+            PTN_PART()
+            phost_tunnel_partition_index()
+            NULL
+        phost_route_add_work() <void phost_route_add_work (struct route_work *work) at route.c:42>:
+            spin_lock()
+            phost_router <struct phost_router phost_router at route.c:36>
+            list_add_tail()
+            spin_unlock()
+        phost_tunnel_add_remote_data()
+        __add_consumer() <void __add_consumer (struct data_port *consumer) at route.c:197>:
+            ANY_MATCH
+            hash_add()
+            phost_router <struct phost_router phost_router at route.c:36>
+            phost_tunnel_function()
+        spin_unlock()
+    __phost_route_add_producer_with_work() <int __phost_route_add_producer_with_work (struct data_port *producer, struct route_work *work) at route.c:207>:
+        spin_lock()
+        phost_router <struct phost_router phost_router at route.c:36>
+        __phost_route_find_matched_consumer() <struct data_port *__phost_route_find_matched_consumer (struct data_port *producer, uint64_t target) at route.c:145>:
+            uint32_t
+            function
+            phost_tunnel_function()
+            uint64_t
+            key
+            TUNNEL_TO_UINT64()
+            hash_for_each_possible_safe()
+            phost_router <struct phost_router phost_router at route.c:36>
+            node
+            ANY_MATCH
+            hash_del()
+            target_function
+            TUNNEL_PART()
+            target_ptn
+            PTN_PART()
+            phost_tunnel_partition_index()
+            NULL
+        phost_route_add_work() <void phost_route_add_work (struct route_work *work) at route.c:42>:
+            spin_lock()
+            phost_router <struct phost_router phost_router at route.c:36>
+            list_add_tail()
+            spin_unlock()
+        phost_tunnel_add_remote_data()
+        __add_producer() <void __add_producer (struct data_port *producer) at route.c:187>:
+            ANY_MATCH
+            hash_add()
+            phost_router <struct phost_router phost_router at route.c:36>
+            phost_tunnel_function()
+        spin_unlock()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+phost_route_add_producer() <struct data_port *phost_route_add_producer (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb, int ptn_index, int tunnel_type) at route.c:314>:
+    uint64_t
+    target
+    MERGE_TO_UINT64()
+    __alloc_data_port() <struct data_port *__alloc_data_port (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb, uint64_t target) at route.c:273>:
+        kmalloc()
+        GFP_KERNEL
+        NULL
+        phost_get_tunnel()
+        INIT_HLIST_NODE()
+        kref_init()
+        spin_lock_init()
+        mmgrab()
+    ERR_PTR()
+    ENOMEM
+    data_port_get() <void data_port_get (struct data_port *port) at route.c:89>:
+        kref_get()
+    __phost_route_add_producer() <int __phost_route_add_producer (struct data_port *producer) at route.c:228>:
+        phost_route_work_alloc() <struct route_work *phost_route_work_alloc (void) at route.c:70>:
+            kzalloc()
+            GFP_KERNEL
+            NULL
+            INIT_LIST_HEAD()
+        ENOMEM
+        __phost_route_add_producer_with_work() <int __phost_route_add_producer_with_work (struct data_port *producer, struct route_work *work) at route.c:207>:
+            spin_lock()
+            phost_router <struct phost_router phost_router at route.c:36>
+            __phost_route_find_matched_consumer() <struct data_port *__phost_route_find_matched_consumer (struct data_port *producer, uint64_t target) at route.c:145>:
+                uint32_t
+                function
+                phost_tunnel_function()
+                uint64_t
+                key
+                TUNNEL_TO_UINT64()
+                hash_for_each_possible_safe()
+                phost_router <struct phost_router phost_router at route.c:36>
+                node
+                ANY_MATCH
+                hash_del()
+                target_function
+                TUNNEL_PART()
+                target_ptn
+                PTN_PART()
+                phost_tunnel_partition_index()
+                NULL
+            phost_route_add_work() <void phost_route_add_work (struct route_work *work) at route.c:42>:
+                spin_lock()
+                phost_router <struct phost_router phost_router at route.c:36>
+                list_add_tail()
+                spin_unlock()
+            phost_tunnel_add_remote_data()
+            __add_producer() <void __add_producer (struct data_port *producer) at route.c:187>:
+                ANY_MATCH
+                hash_add()
+                phost_router <struct phost_router phost_router at route.c:36>
+                phost_tunnel_function()
+            spin_unlock()
+        phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+            data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+                kref_put()
+                data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                    container_of()
+                    data_port
+                    phost_put_tunnel()
+                    mmdrop()
+                    kfree()
+            list_del_init()
+            kfree()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+phost_route_add_producer_matched_any() <struct data_port *phost_route_add_producer_matched_any (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb) at route.c:294>:
+    __alloc_data_port() <struct data_port *__alloc_data_port (struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb *cb, uint64_t target) at route.c:273>:
+        kmalloc()
+        GFP_KERNEL
+        NULL
+        phost_get_tunnel()
+        INIT_HLIST_NODE()
+        kref_init()
+        spin_lock_init()
+        mmgrab()
+    ANY_MATCH
+    ERR_PTR()
+    ENOMEM
+    data_port_get() <void data_port_get (struct data_port *port) at route.c:89>:
+        kref_get()
+    __phost_route_add_producer() <int __phost_route_add_producer (struct data_port *producer) at route.c:228>:
+        phost_route_work_alloc() <struct route_work *phost_route_work_alloc (void) at route.c:70>:
+            kzalloc()
+            GFP_KERNEL
+            NULL
+            INIT_LIST_HEAD()
+        ENOMEM
+        __phost_route_add_producer_with_work() <int __phost_route_add_producer_with_work (struct data_port *producer, struct route_work *work) at route.c:207>:
+            spin_lock()
+            phost_router <struct phost_router phost_router at route.c:36>
+            __phost_route_find_matched_consumer() <struct data_port *__phost_route_find_matched_consumer (struct data_port *producer, uint64_t target) at route.c:145>:
+                uint32_t
+                function
+                phost_tunnel_function()
+                uint64_t
+                key
+                TUNNEL_TO_UINT64()
+                hash_for_each_possible_safe()
+                phost_router <struct phost_router phost_router at route.c:36>
+                node
+                ANY_MATCH
+                hash_del()
+                target_function
+                TUNNEL_PART()
+                target_ptn
+                PTN_PART()
+                phost_tunnel_partition_index()
+                NULL
+            phost_route_add_work() <void phost_route_add_work (struct route_work *work) at route.c:42>:
+                spin_lock()
+                phost_router <struct phost_router phost_router at route.c:36>
+                list_add_tail()
+                spin_unlock()
+            phost_tunnel_add_remote_data()
+            __add_producer() <void __add_producer (struct data_port *producer) at route.c:187>:
+                ANY_MATCH
+                hash_add()
+                phost_router <struct phost_router phost_router at route.c:36>
+                phost_tunnel_function()
+            spin_unlock()
+        phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+            data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+                kref_put()
+                data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                    container_of()
+                    data_port
+                    phost_put_tunnel()
+                    mmdrop()
+                    kfree()
+            list_del_init()
+            kfree()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+phost_route_cancel() <void phost_route_cancel (struct phost_partition *ptn) at route.c:424>:
+    HLIST_HEAD_INIT
+    uint32_t
+    ptn_index
+    spin_lock()
+    phost_router <struct phost_router phost_router at route.c:36>
+    hash_for_each_safe()
+    node
+    PTN_PART()
+    hash_del()
+    hlist_add_head()
+    spin_unlock()
+    hlist_for_each_entry_safe()
+    data_port_is_consumed()
+    data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+        kref_put()
+        data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+            container_of()
+            data_port
+            phost_put_tunnel()
+            mmdrop()
+            kfree()
+    again
+    list_for_each_entry()
+    list_del_init()
+    kthread_cancel_work_sync()
+    phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+        data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+            kref_put()
+            data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                container_of()
+                data_port
+                phost_put_tunnel()
+                mmdrop()
+                kfree()
+        list_del_init()
+        kfree()
+phost_route_del_work() <void phost_route_del_work (struct route_work *work) at route.c:59>:
+    spin_lock()
+    phost_router <struct phost_router phost_router at route.c:36>
+    list_empty()
+    spin_unlock()
+    phost_route_work_destroy() <void phost_route_work_destroy (struct route_work *work) at route.c:49>:
+        data_port_put() <void data_port_put (struct data_port *port) at route.c:96>:
+            kref_put()
+            data_port_release() <void data_port_release (struct kref *ref) at route.c:78>:
+                container_of()
+                data_port
+                phost_put_tunnel()
+                mmdrop()
+                kfree()
+        list_del_init()
+        kfree()

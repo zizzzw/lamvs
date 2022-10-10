@@ -1,0 +1,39 @@
+analyse_protocol_from_buf() <struct protocol_header *analyse_protocol_from_buf (void *data) at protocol.c:6>:
+    NULL
+distribute_partition_data() <struct data_port *distribute_partition_data (struct protocol_header *header, struct phost_tunnel_state *tunnel, struct phost_ring_desc *desc, struct tunnel_route_cb cb) at protocol.c:50>:
+    NULL
+    pr_info()
+    ktime_get_real_ns()
+    PHOST_PUBLISH_READ
+    PHOST_PUBLISH_WRITE
+    PHOST_UNPUBLISH
+    PHOST_SUBSCRIBE_READ
+    PHOST_SUBSCRIBE_WRITE
+    PHOST_UNSUBSCRIBE
+    publish_subscribe_cb
+    phost_route_add_producer()
+    PHOST_DATA_ROUTE
+    PHOST_READ
+    query_communication_element()
+    read_request_target_producer_cb
+    read_request_data_producer_cb
+    PHOST_ACCEPT_READ
+    read_response_data_producer_cb
+    PHOST_WRITE
+    write_request_target_producer_cb
+    write_request_data_producer_cb
+    PHOST_ACCEPT_WRITE
+    write_response_data_consumer_cb
+    phost_route_add_consumer()
+ready_consumer_cb <const struct tunnel_route_cb ready_consumer_cb at protocol.c:45>
+ready_consumer_consume() <ssize_t ready_consumer_consume (struct data_port *self, struct data_port *other) at protocol.c:22>:
+    NULL
+    memcpy()
+    strchr()
+    strcpy()
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+    kfree()
+ready_consumer_match() <int ready_consumer_match (struct data_port *self, struct data_port *other) at protocol.c:16>

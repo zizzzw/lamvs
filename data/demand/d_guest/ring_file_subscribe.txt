@@ -1,0 +1,62 @@
+pguestfs_subscribe() <long pguestfs_subscribe (char *name, size_t size, SecurityLevel level, Action action) at ring_file_subscribe.c:57>:
+    __pguestfs_subscribe_handle_data() <void __pguestfs_subscribe_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at ring_file_subscribe.c:5>:
+        wake_up_interruptible()
+    NULL
+    PGUEST_ERROR
+    pguest_subscribe_protocol()
+    pr_warning()
+    kzalloc()
+    GFP_KERNEL
+    free_subscribe_header
+    memcpy()
+    free_subscribe_result
+    init_waitqueue_head()
+    sg_init_table()
+    sg_set_buf()
+    pr_info()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    wait_event_interruptible()
+    __pguestfs_subscribe_fin() <void __pguestfs_subscribe_fin (struct protocol_header *header, struct protocol_header *result) at ring_file_subscribe.c:13>:
+        NULL
+        umode_t
+        mode
+        PGUEST_SUCCESS
+        strrchr()
+        pr_info()
+        PGUEST_SUBSCRIBE_READ
+        PGUEST_SUBSCRIBE_WRITE
+        pguestfs_create_data()
+        pguestfs_protocol_fops
+        PGUEST_RESOURCE_NONEXIST
+        pr_warning()
+        PGUEST_PERMISSION_DENIED
+        PGUEST_ERROR
+    kfree()
+pguestfs_unsubscribe() <long pguestfs_unsubscribe (const char *name, size_t size, SecurityLevel level) at ring_file_subscribe.c:149>:
+    __pguestfs_file_unsubscribe_handle_data() <void __pguestfs_file_unsubscribe_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at ring_file_subscribe.c:119>:
+        wake_up_interruptible()
+    NULL
+    PGUEST_ERROR
+    pguest_unsubscribe_protocol()
+    pr_warning()
+    kzalloc()
+    GFP_KERNEL
+    free_unsubscribe_header
+    free_unsubscribe_result
+    init_waitqueue_head()
+    sg_init_table()
+    sg_set_buf()
+    pr_info()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    wait_event_interruptible()
+    __pguestfs_unsubscribe_fin() <void __pguestfs_unsubscribe_fin (struct protocol_header *header, struct protocol_header *result) at ring_file_subscribe.c:127>:
+        PGUEST_SUCCESS
+        pr_info()
+        PGUEST_ERROR
+        pr_warning()
+        PGUEST_RESOURCE_NONEXIST
+    kfree()

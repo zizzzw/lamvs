@@ -1,0 +1,33 @@
+send_out_protocol_read() <ssize_t send_out_protocol_read (struct file *filp, char __user *buffer, size_t count, loff_t *ppos) at pguestfs_read_service.c:48>:
+    ENOMEM
+    NULL
+    __protocol_read_handle_data() <void __protocol_read_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at pguestfs_read_service.c:40>:
+        wake_up_interruptible()
+    kzalloc()
+    GFP_KERNEL
+    pr_warning()
+    init_waitqueue_head()
+    pguestfs_read_info_protocol()
+    free_read_info
+    pguestfs_read_data_protocol()
+    free_read_data
+    sg_init_table()
+    sg_set_buf()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    wait_event_interruptible()
+    __read_process_after_communication() <ssize_t __read_process_after_communication (struct protocol_header *data, loff_t *ppos, char __user *buffer) at pguestfs_read_service.c:5>:
+        EFAULT
+        PGUEST_SUCCESS
+        copy_to_user()
+        pr_warning()
+        PGUEST_NOT_READY
+        PGUEST_RESOURCE_NONEXIST
+        EIO
+        PGUEST_ERROR
+        PGUEST_PERMISSION_DENIED
+        EPERM
+    pr_info()
+    ktime_get_real_ns()
+    kfree()

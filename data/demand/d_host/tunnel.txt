@@ -1,0 +1,155 @@
+__phost_get_tunnel() <void __phost_get_tunnel (struct phost_tunnel_state *tunnel) at tunnel.c:241>:
+    kref_get()
+__phost_put_tunnel() <int __phost_put_tunnel (struct phost_tunnel_state *tunnel) at tunnel.c:268>:
+    kref_put()
+    phost_tunnel_ref_destroy() <void phost_tunnel_ref_destroy (struct kref *ref) at tunnel.c:247>:
+        container_of()
+        phost_tunnel_state
+        phost_tunnel_destroy() <void phost_tunnel_destroy (struct phost_tunnel_state *tunnel) at tunnel.c:255>:
+            PHOST_TUNNEL_INIT_BIT
+            phost_tunnel_put_driver() <void phost_tunnel_put_driver (struct phost_tunnel_driver *driver) at tunnel.c:43>:
+                module_put()
+            mutex_destroy()
+            eventfd_ctx_put()
+            phost_put_partition()
+            kfree()
+__phost_tunnel_register_driver() <int __phost_tunnel_register_driver (struct phost_tunnel_driver *driver, struct module *module) at tunnel.c:56>:
+    EINVAL
+    noop_ioctl() <long noop_ioctl (struct phost_tunnel_state *tunnel, unsigned int ioctl, unsigned long args) at tunnel.c:50>:
+        EINVAL
+    spin_lock()
+    tunnel_lock <spinlock_t tunnel_lock at tunnel.c:11>
+    __phost_tunnel_get_driver() <struct phost_tunnel_driver *__phost_tunnel_get_driver (int function) at tunnel.c:17>:
+        list_for_each_entry_rcu()
+        tunnel_drivers
+        tunnel_node
+        NULL
+    spin_unlock()
+    EEXIST
+    list_add_tail_rcu()
+    tunnel_drivers
+phost_tunnel_add_remote_data() <int phost_tunnel_add_remote_data (struct data_port *self, struct data_port *data, struct kthread_work *work) at tunnel.c:161>:
+    BUG_ON()
+    kthread_init_work()
+    consume_remote_data() <void consume_remote_data (struct kthread_work *w) at tunnel.c:115>:
+        ssize_t
+        r
+        container_of()
+        route_work
+        mutex_lock()
+        data_port_set_consumed()
+        mutex_unlock()
+        phost_tunnel_add_consumed_data() <int phost_tunnel_add_consumed_data (struct data_port *self, struct data_port *other, ssize_t consumed) at tunnel.c:140>:
+            ENODEV
+            phost_route_work_alloc()
+            ENOMEM
+            data_port_get()
+            kthread_init_work()
+            data_consumed_notifier() <void data_consumed_notifier (struct kthread_work *w) at tunnel.c:129>:
+                container_of()
+                route_work
+                mutex_lock()
+                data_port_set_consumed()
+                mutex_unlock()
+                phost_route_del_work()
+            phost_route_add_work()
+            kthread_queue_work()
+        phost_route_del_work()
+    kthread_queue_work()
+phost_tunnel_alloc() <struct phost_tunnel_state *phost_tunnel_alloc (struct phost_partition *ptn, struct phost_tunnel_driver *drv) at tunnel.c:284>:
+    kzalloc()
+    GFP_KERNEL
+    ERR_PTR()
+    ENOMEM
+    mutex_init()
+    kref_init()
+    phost_get_partition()
+phost_tunnel_alloc_shared() <int phost_tunnel_alloc_shared (struct phost_tunnel_state *tunnel, unsigned long size) at tunnel.c:332>:
+    PAGE_MASK
+    EINVAL
+    alloc_pages_exact()
+    GFP_KERNEL
+    __GFP_ZERO
+    ENOMEM
+    PAGE_SHIFT
+phost_tunnel_free_shared() <void phost_tunnel_free_shared (struct phost_tunnel_state *tunnel) at tunnel.c:348>:
+    free_pages_exact()
+    PAGE_SHIFT
+phost_tunnel_get_driver() <struct phost_tunnel_driver *phost_tunnel_get_driver (int function) at tunnel.c:27>:
+    rcu_read_lock()
+    __phost_tunnel_get_driver() <struct phost_tunnel_driver *__phost_tunnel_get_driver (int function) at tunnel.c:17>:
+        list_for_each_entry_rcu()
+        tunnel_drivers
+        tunnel_node
+        NULL
+    try_module_get()
+    ERR_PTR()
+    ENODEV
+    rcu_read_unlock()
+    ENOENT
+phost_tunnel_get_fd() <int phost_tunnel_get_fd (struct phost_tunnel_state *tunnel) at tunnel.c:300>:
+    kasprintf()
+    GFP_KERNEL
+    ENOMEM
+    phost_get_tunnel()
+    anon_inode_getfd()
+    phost_tunnel_ops <struct file_operations phost_tunnel_ops at tunnel.c:233>
+    O_RDWR
+    kfree()
+    phost_put_tunnel()
+phost_tunnel_init() <int phost_tunnel_init (struct phost_tunnel_state *tunnel) at tunnel.c:274>:
+    PHOST_TUNNEL_INIT_BIT
+phost_tunnel_ioctl() <long phost_tunnel_ioctl (struct file *filp, unsigned int ioctl, unsigned long args) at tunnel.c:196>:
+    PHOST_TUNNEL_CONSUME
+    phost_partition_add_tunnel_work()
+    __phost_tunnel_consume() <void __phost_tunnel_consume (struct kthread_work *work) at tunnel.c:103>:
+        container_of()
+        phost_tunnel_work_struct
+        mutex_lock()
+        mutex_unlock()
+        phost_partition_destroy_tunnel_work()
+    PHOST_TUNNEL_SET_EVENTFD
+    phost_tunnel_set_eventfd() <long phost_tunnel_set_eventfd (struct phost_tunnel_state *tunnel, unsigned long fd) at tunnel.c:182>:
+        eventfd_ctx_fdget()
+        IS_ERR()
+        PTR_ERR()
+        mutex_lock()
+        eventfd_ctx_put()
+        mutex_unlock()
+    phost_tunnel_private_ioctl() <long phost_tunnel_private_ioctl (struct phost_tunnel_state *tunnel, unsigned int ioctl, unsigned long args) at tunnel.c:171>:
+        r
+        mutex_lock()
+        mutex_unlock()
+phost_tunnel_mmap() <int phost_tunnel_mmap (struct file *filp, struct vm_area_struct *vma) at tunnel.c:227>:
+    phost_tunnel_vm_ops <const struct vm_operations_struct phost_tunnel_vm_ops at tunnel.c:223>
+phost_tunnel_mmap_fault() <vm_fault_t phost_tunnel_mmap_fault (struct vm_fault *vmf) at tunnel.c:210>:
+    virt_to_page()
+    PAGE_SHIFT
+    get_page()
+phost_tunnel_release() <int phost_tunnel_release (struct inode *inode, struct file *filp) at tunnel.c:95>:
+    phost_put_tunnel()
+phost_tunnel_reset() <void phost_tunnel_reset (struct phost_tunnel_state *tunnel) at tunnel.c:364>:
+    mutex_lock()
+    eventfd_ctx_put()
+    NULL
+    phost_tunnel_clear_shared() <void phost_tunnel_clear_shared (struct phost_tunnel_state *tunnel) at tunnel.c:357>:
+        size
+        PAGE_SHIFT
+        memset()
+    mutex_unlock()
+phost_tunnel_signal_user() <void phost_tunnel_signal_user (struct phost_tunnel_state *tunnel) at tunnel.c:324>:
+    mutex_lock()
+    __phost_tunnel_signal_user() <void __phost_tunnel_signal_user (struct phost_tunnel_state *tunnel) at tunnel.c:317>:
+        eventfd_signal()
+    mutex_unlock()
+phost_tunnel_unregister_driver() <void phost_tunnel_unregister_driver (struct phost_tunnel_driver *driver) at tunnel.c:80>:
+    spin_lock()
+    tunnel_lock <spinlock_t tunnel_lock at tunnel.c:11>
+    __phost_tunnel_get_driver() <struct phost_tunnel_driver *__phost_tunnel_get_driver (int function) at tunnel.c:17>:
+        list_for_each_entry_rcu()
+        tunnel_drivers
+        tunnel_node
+        NULL
+    out
+    list_del_rcu()
+    spin_unlock()

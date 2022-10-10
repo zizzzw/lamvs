@@ -1,0 +1,35 @@
+ring_hello_consume() <void ring_hello_consume (struct phost_tunnel_state *tunnel) at tunnel_ring_hello.c:62>:
+    phost_ring_dequeue()
+    ring_dequeue() <void ring_dequeue (struct phost_ring *ring, uint16_t idx, void *opaque) at tunnel_ring_hello.c:38>:
+        r
+        PHOST_RING_DESC_WRITE
+        size_t
+        len
+        sz
+        sprintf()
+        copy_to_user()
+        min()
+        pr_warning()
+        phost_ring_add_used()
+        __phost_tunnel_signal_user()
+    err_handler() <void err_handler (struct phost_ring *ring, uint16_t idx, int r, void *opaque) at tunnel_ring_hello.c:30>:
+        phost_ring_add_used()
+        __phost_tunnel_signal_user()
+ring_hello_exit() <void __exit ring_hello_exit (void) at tunnel_ring_hello.c:98>:
+    phost_tunnel_unregister_driver()
+    driver <struct phost_tunnel_driver driver at tunnel_ring_hello.c:82>
+ring_hello_init() <int __init ring_hello_init (void) at tunnel_ring_hello.c:93>:
+    phost_tunnel_register_driver()
+    driver <struct phost_tunnel_driver driver at tunnel_ring_hello.c:82>
+ring_hello_release() <void ring_hello_release (struct phost_tunnel_state *tunnel) at tunnel_ring_hello.c:68>:
+    kfree()
+    phost_tunnel_free_shared()
+ring_hello_reset() <void ring_hello_reset (struct phost_tunnel_state *tunnel) at tunnel_ring_hello.c:75>:
+    phost_ring_init()
+ring_hello_setup() <long ring_hello_setup (struct phost_tunnel_state *tunnel) at tunnel_ring_hello.c:13>:
+    r
+    kzalloc()
+    GFP_KERNEL
+    ENOMEM
+    phost_ring_construct_from_tunnel()
+    kfree()

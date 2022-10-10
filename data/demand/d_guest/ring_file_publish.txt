@@ -1,0 +1,53 @@
+pguestfs_publish() <long pguestfs_publish (char *name, size_t size, SecurityLevel level, Action action) at ring_file_publish.c:34>:
+    __pguestfs_publish_handle_data() <void __pguestfs_publish_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at ring_file_publish.c:5>:
+        wake_up_interruptible()
+    NULL
+    PGUEST_ERROR
+    pguest_publish_protocol()
+    pr_warning()
+    kzalloc()
+    GFP_KERNEL
+    free_publish_header
+    free_publish_result
+    init_waitqueue_head()
+    sg_init_table()
+    sg_set_buf()
+    pr_info()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    wait_event_interruptible()
+    __pguestfs_publish_fin() <void __pguestfs_publish_fin (struct protocol_header *header, struct protocol_header *result) at ring_file_publish.c:13>:
+        PGUEST_SUCCESS
+        pr_info()
+        PGUEST_RESOURCE_EXIST
+        pr_warning()
+        PGUEST_PERMISSION_DENIED
+    kfree()
+pguestfs_unpublish() <long pguestfs_unpublish (const char *name, size_t size, SecurityLevel level) at ring_file_publish.c:120>:
+    __pguestfs_unpublish_handle_data() <void __pguestfs_unpublish_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at ring_file_publish.c:91>:
+        wake_up_interruptible()
+    NULL
+    PGUEST_ERROR
+    pguest_unpublish_protocol()
+    pr_warning()
+    kzalloc()
+    GFP_KERNEL
+    free_unpublish_header
+    free_unpublish_result
+    init_waitqueue_head()
+    sg_init_table()
+    sg_set_buf()
+    pr_info()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    wait_event_interruptible()
+    __pguestfs_unpublish_fin() <void __pguestfs_unpublish_fin (struct protocol_header *header, struct protocol_header *result) at ring_file_publish.c:99>:
+        PGUEST_SUCCESS
+        pr_info()
+        PGUEST_ERROR
+        pr_warning()
+        PGUEST_RESOURCE_NONEXIST
+    kfree()
+    ENOMEM

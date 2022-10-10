@@ -1,0 +1,131 @@
+pguest_ring_add_buf() <int pguest_ring_add_buf (struct pguest_ring *ring, void *buf, size_t len, bool is_write, struct ring_desc_cb *cb) at ring.c:123>:
+    uint16_t
+    head
+    BUG_ON()
+    might_sleep()
+    spin_lock_irq()
+    pguest_ring_wait_free_desc() <int pguest_ring_wait_free_desc (struct pguest_ring *ring, uint16_t need) at ring.c:97>:
+        wait_event_interruptible_lock_irq()
+    spin_unlock_irq()
+    virt_to_phys()
+    PGUEST_RING_DESC_WRITE
+    pguest_ring_add_avail_idx() <int pguest_ring_add_avail_idx (struct pguest_ring *ring, uint16_t idx) at ring.c:79>:
+        spin_lock_irq()
+        wait_event_interruptible_lock_irq()
+        out
+        spin_unlock_irq()
+    pguest_ring_free_desc() <void pguest_ring_free_desc (struct pguest_ring *ring, struct ring_desc *head, struct ring_desc *tail, unsigned count) at ring.c:104>:
+        flags
+        spin_lock_irqsave()
+        PGUEST_RING_DESC_NEXT
+        pguest_ring_desc_idx()
+        spin_unlock_irqrestore()
+        wake_up_all()
+pguest_ring_add_sg() <int pguest_ring_add_sg (struct pguest_ring *ring, struct scatterlist *sg, uint16_t out, uint16_t in, struct ring_desc_cb *cb) at ring.c:158>:
+    uint16_t
+    idx
+    uninitialized_var()
+    prev
+    head
+    BUG_ON()
+    might_sleep()
+    spin_lock_irq()
+    unlock
+    pguest_ring_wait_free_desc() <int pguest_ring_wait_free_desc (struct pguest_ring *ring, uint16_t need) at ring.c:97>:
+        wait_event_interruptible_lock_irq()
+    sg_phys()
+    PGUEST_RING_DESC_NEXT
+    PGUEST_RING_DESC_WRITE
+    spin_unlock_irq()
+    pguest_ring_add_avail_idx() <int pguest_ring_add_avail_idx (struct pguest_ring *ring, uint16_t idx) at ring.c:79>:
+        spin_lock_irq()
+        wait_event_interruptible_lock_irq()
+        out
+        spin_unlock_irq()
+    pguest_ring_free_desc() <void pguest_ring_free_desc (struct pguest_ring *ring, struct ring_desc *head, struct ring_desc *tail, unsigned count) at ring.c:104>:
+        flags
+        spin_lock_irqsave()
+        PGUEST_RING_DESC_NEXT
+        pguest_ring_desc_idx()
+        spin_unlock_irqrestore()
+        wake_up_all()
+pguest_ring_alloc() <int pguest_ring_alloc (struct pguest_mm_tunnel_dev *dev, struct pguest_ring *ring) at ring.c:262>:
+    tunnel_private_read32()
+    MM_CONFIG_TUNNEL_RING_AVAIL_SIZE
+    MM_CONFIG_TUNNEL_RING_USED_SIZE
+    MM_CONFIG_TUNNEL_RING_DESC_SIZE
+    pr_info()
+    __pguest_ring_alloc() <int __pguest_ring_alloc (struct pguest_ring *ring) at ring.c:21>:
+        size_t
+        total
+        avail_aligned
+        used_aligned
+        round_up()
+        PAGE_SIZE
+        alloc_pages_exact()
+        GFP_KERNEL
+        __GFP_ZERO
+        ENOMEM
+        kzalloc()
+        free_pages_exact()
+        pguest_ring_init() <void pguest_ring_init (struct pguest_ring *ring) at ring.c:6>:
+            uint16_t
+            size
+            i
+            spin_lock_init()
+            init_waitqueue_head()
+    tunnel_setup()
+    get_ring_addr()
+    get_ring_size()
+    destroy_ring
+    __pguest_ring_destroy() <void __pguest_ring_destroy (struct pguest_ring *ring) at ring.c:57>:
+        uint16_t
+        n
+        kfree()
+        free_pages_exact()
+        get_ring_addr()
+        get_ring_size()
+        memset()
+pguest_ring_dequeue() <int pguest_ring_dequeue (struct pguest_ring *ring) at ring.c:223>:
+    uint16_t
+    used_idx
+    last_idx
+    flags
+    uint32_t
+    total_free
+    spin_lock_irqsave()
+    spin_unlock_irqrestore()
+    idx
+    int64_t
+    len
+    count
+    pguest_ring_count() <void pguest_ring_count (struct pguest_ring *ring, struct ring_desc *head, struct ring_desc **tail, uint16_t *count) at ring.c:208>:
+        uint16_t
+        c
+        PGUEST_RING_DESC_NEXT
+    NULL
+    PGUEST_RING_DESC_NEXT
+    BUG_ON()
+    pguest_ring_free_desc() <void pguest_ring_free_desc (struct pguest_ring *ring, struct ring_desc *head, struct ring_desc *tail, unsigned count) at ring.c:104>:
+        flags
+        spin_lock_irqsave()
+        PGUEST_RING_DESC_NEXT
+        pguest_ring_desc_idx()
+        spin_unlock_irqrestore()
+        wake_up_all()
+pguest_ring_destroy() <void pguest_ring_destroy (struct pguest_mm_tunnel_dev *dev, struct pguest_ring *ring) at ring.c:71>:
+    tunnel_destroy()
+    __pguest_ring_destroy() <void __pguest_ring_destroy (struct pguest_ring *ring) at ring.c:57>:
+        uint16_t
+        n
+        kfree()
+        free_pages_exact()
+        get_ring_addr()
+        get_ring_size()
+        memset()
+pguest_ring_notify() <void pguest_ring_notify (struct pguest_mm_tunnel_dev *dev, struct pguest_ring *ring, uint16_t count) at ring.c:286>:
+    tunnel_write32()
+    MM_CONFIG_TUNNEL_CONSUME
+    spin_lock_irq()
+    spin_unlock_irq()
+    wake_up_all()

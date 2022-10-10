@@ -1,0 +1,55 @@
+all_cancel() <void all_cancel (struct data_port *self) at route_hello.c:49>:
+    phost_ring_add_used()
+    phost_tunnel_signal_user()
+consumer_consume() <ssize_t consumer_consume (struct data_port *self, struct data_port *other) at route_hello.c:16>:
+    len
+    min()
+    ssize_t
+    ret
+    copy_to_user()
+    EFAULT
+    out
+    phost_ring_add_used()
+    phost_ring_desc_idx()
+    __phost_tunnel_signal_user()
+consumer_match() <int consumer_match (struct data_port *self, struct data_port *other) at route_hello.c:36>:
+    PHOST_RING_DESC_WRITE
+producer_is_consumed() <void producer_is_consumed (struct data_port *self, struct data_port *other, ssize_t consumed) at route_hello.c:41>:
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+route_hello_consume() <void route_hello_consume (struct phost_tunnel_state *tunnel) at route_hello.c:110>:
+    phost_ring_dequeue()
+    route_dequeue() <void route_dequeue (struct phost_ring *ring, uint16_t idx, void *opaque) at route_hello.c:95>:
+        PHOST_RING_DESC_WRITE
+        phost_route_add_consumer_matched_any()
+        consumer_cb <struct tunnel_route_cb consumer_cb at route_hello.c:56>
+        phost_route_add_producer_matched_any()
+        producer_cb <struct tunnel_route_cb producer_cb at route_hello.c:62>
+        IS_ERR()
+        data_port_put()
+    error_dequeue() <void error_dequeue (struct phost_ring *ring, uint16_t idx, int r, void *opaque) at route_hello.c:87>:
+        phost_ring_add_used()
+        __phost_tunnel_signal_user()
+route_hello_exit() <void __exit route_hello_exit (void) at route_hello.c:145>:
+    phost_tunnel_unregister_driver()
+    driver <struct phost_tunnel_driver driver at route_hello.c:129>
+route_hello_init() <int __init route_hello_init (void) at route_hello.c:140>:
+    phost_tunnel_register_driver()
+    driver <struct phost_tunnel_driver driver at route_hello.c:129>
+route_hello_release() <void route_hello_release (struct phost_tunnel_state *tunnel) at route_hello.c:116>:
+    kfree()
+    phost_tunnel_free_shared()
+route_hello_reset() <void route_hello_reset (struct phost_tunnel_state *tunnel) at route_hello.c:123>:
+    phost_ring_init()
+route_hello_setup() <long route_hello_setup (struct phost_tunnel_state *tunnel) at route_hello.c:67>:
+    r
+    kzalloc()
+    GFP_KERNEL
+    size_t
+    size
+    ENOMEM
+    phost_ring_size()
+    phost_tunnel_alloc_shared()
+    kfree()
+    phost_ring_alloc()
+    phost_tunnel_get_shared()

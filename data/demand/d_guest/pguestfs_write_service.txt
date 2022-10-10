@@ -1,0 +1,35 @@
+send_out_protocol_write() <ssize_t send_out_protocol_write (struct file *filp, const char __user *buffer, size_t count, loff_t *ppos) at pguestfs_write_service.c:41>:
+    ENOMEM
+    NULL
+    __protocol_write_handle_data() <void __protocol_write_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at pguestfs_write_service.c:33>:
+        wake_up_interruptible()
+    kzalloc()
+    GFP_KERNEL
+    pr_warning()
+    init_waitqueue_head()
+    pguestfs_write_data_protocol()
+    free_write_data
+    pguestfs_write_result_protocol()
+    free_write_result
+    copy_from_user()
+    EFAULT
+    free_data
+    pr_info()
+    ktime_get_real_ns()
+    sg_init_table()
+    sg_set_buf()
+    pguest_ring_add_sg()
+    pguestfs_data_transfer
+    pguest_ring_notify()
+    wait_event_interruptible()
+    __write_process_after_communication() <ssize_t __write_process_after_communication (struct protocol_header *data, loff_t *ppos) at pguestfs_write_service.c:5>:
+        EFAULT
+        PGUEST_SUCCESS
+        PGUEST_NOT_READY
+        pr_warning()
+        PGUEST_RESOURCE_NONEXIST
+        EIO
+        PGUEST_ERROR
+        PGUEST_PERMISSION_DENIED
+        EPERM
+    kfree()

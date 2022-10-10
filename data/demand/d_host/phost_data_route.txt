@@ -1,0 +1,58 @@
+phost_data_route_consume() <void phost_data_route_consume (struct phost_tunnel_state *tunnel) at phost_data_route.c:95>:
+    phost_ring_dequeue()
+    phost_data_route_handler() <void phost_data_route_handler (struct phost_ring *ring, uint16_t idx, void *opaque) at phost_data_route.c:7>:
+        NULL
+        __u32
+        index
+        PHOST_RING_DESC_WRITE
+        kzalloc()
+        GFP_KERNEL
+        pr_warning()
+        pr_info()
+        controller_consumer_cb
+        phost_route_add_consumer_matched_any()
+        ready_consumer_cb
+        controller_producer_cb
+        phost_route_add_producer()
+        PHOST_DATA_ROUTE
+        analyse_protocol_from_buf()
+        distribute_partition_data()
+        IS_ERR()
+        data_port_put()
+    phost_data_route_error() <void phost_data_route_error (struct phost_ring *ring, uint16_t idx, int r, void *opaque) at phost_data_route.c:87>:
+        phost_ring_add_used()
+        __phost_tunnel_signal_user()
+phost_data_route_exit() <void __exit phost_data_route_exit (void) at phost_data_route.c:140>:
+    phost_tunnel_unregister_driver()
+    phost_data_route_driver <struct phost_tunnel_driver phost_data_route_driver at phost_data_route.c:124>
+phost_data_route_init() <int __init phost_data_route_init (void) at phost_data_route.c:135>:
+    phost_tunnel_register_driver()
+    phost_data_route_driver <struct phost_tunnel_driver phost_data_route_driver at phost_data_route.c:124>
+phost_data_route_release() <void phost_data_route_release (struct phost_tunnel_state *tunnel) at phost_data_route.c:102>:
+    NULL
+    kfree()
+    phost_tunnel_free_shared()
+    rcu_read_lock()
+    list_for_each_entry_rcu()
+    communication_cache <struct communication_cache *communication_cache at phost_data_route.c:5>
+    list
+    free_communication_element()
+    rcu_read_unlock()
+phost_data_route_reset() <void phost_data_route_reset (struct phost_tunnel_state *tunnel) at phost_data_route.c:118>:
+    phost_ring_init()
+phost_data_route_setup() <long phost_data_route_setup (struct phost_tunnel_state *tunnel) at phost_data_route.c:57>:
+    r
+    kzalloc()
+    GFP_KERNEL
+    size_t
+    size
+    ENOMEM
+    phost_ring_size()
+    phost_tunnel_alloc_shared()
+    kfree()
+    phost_ring_alloc()
+    phost_tunnel_get_shared()
+    communication_cache <struct communication_cache *communication_cache at phost_data_route.c:5>
+    MAX_COMMUNICATION_CACHE_SIZE
+    spin_lock_init()
+    INIT_LIST_HEAD()
