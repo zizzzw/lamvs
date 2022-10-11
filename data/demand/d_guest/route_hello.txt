@@ -1,0 +1,107 @@
+route_hello_exit() <void __exit route_hello_exit (void) at route_hello.c:261>:
+    pguest_mm_tunnel_unregister_driver()
+    route_hello_driver <struct pguest_mm_tunnel_driver route_hello_driver at route_hello.c:248>
+route_hello_init() <int __init route_hello_init (void) at route_hello.c:256>:
+    pguest_mm_tunnel_register_driver()
+    route_hello_driver <struct pguest_mm_tunnel_driver route_hello_driver at route_hello.c:248>
+route_hello_irq_handler() <void route_hello_irq_handler (struct pguest_mm_tunnel_dev *dev, uint32_t irq_status) at route_hello.c:233>:
+    MM_INT_ERROR
+    route_hello_handle_error() <void route_hello_handle_error (struct pguest_mm_tunnel_dev *dev) at route_hello.c:223>
+    MM_INT_DATA_HANDLED
+    route_hello_handle_data() <void route_hello_handle_data (struct pguest_mm_tunnel_dev *dev) at route_hello.c:227>:
+        dev_get_drvdata()
+        pguest_ring_dequeue()
+    pr_warning()
+route_hello_probe() <int route_hello_probe (struct pguest_mm_tunnel_dev *dev) at route_hello.c:191>:
+    ENOMEM
+    kzalloc()
+    GFP_KERNEL
+    pguest_ring_alloc()
+    free_hello
+    route_hello_create_proc() <int route_hello_create_proc (struct route_hello *hello) at route_hello.c:176>:
+        dn
+        dev_name()
+        kasprintf()
+        GFP_KERNEL
+        ENOMEM
+        proc_create_data()
+        NULL
+        route_proc_fileops <const struct file_operations route_proc_fileops at route_hello.c:168>
+        kfree()
+    destroy_tunnel
+    dev_set_drvdata()
+    pguest_ring_destroy()
+    kfree()
+route_hello_proc_open() <int route_hello_proc_open (struct inode *inode, struct file *filp) at route_hello.c:161>:
+    PDE_DATA()
+route_hello_proc_read() <ssize_t route_hello_proc_read (struct file *filp, char __user *buffer, size_t count, loff_t *pos) at route_hello.c:110>:
+    route_hello_read_handle_data() <void route_hello_read_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at route_hello.c:96>:
+        wake_up_interruptible()
+    route_hello_read_free() <void route_hello_read_free (struct pguest_ring *ring, void *opaque) at route_hello.c:104>:
+        kref_put()
+        ring_cb_struct_free() <void ring_cb_struct_free (struct kref *ref) at route_hello.c:24>:
+            container_of()
+            ring_cb_struct
+            kfree()
+    U16_MAX
+    kmalloc()
+    GFP_KERNEL
+    ENOMEM
+    kfree()
+    ring_cb_struct_init() <void ring_cb_struct_init (struct ring_cb_struct *cb, void *buf) at route_hello.c:31>:
+        kref_init()
+        init_waitqueue_head()
+    kref_get()
+    pguest_ring_add_buf()
+    true
+    free_buf
+    pguest_ring_notify()
+    wait_event_interruptible()
+    min()
+    size_t
+    copy_to_user()
+    EFAULT
+    kref_put()
+    ring_cb_struct_free() <void ring_cb_struct_free (struct kref *ref) at route_hello.c:24>:
+        container_of()
+        ring_cb_struct
+        kfree()
+route_hello_proc_write() <ssize_t route_hello_proc_write (struct file *file, const char __user *buffer, size_t count, loff_t *ppos) at route_hello.c:53>:
+    ssize_t
+    ret
+    __route_proc_write_handle_data() <void __route_proc_write_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at route_hello.c:39>:
+        wake_up_interruptible()
+    __route_proc_write_free_buf() <void __route_proc_write_free_buf (struct pguest_ring *ring, void *opaque) at route_hello.c:47>:
+        kref_put()
+        ring_cb_struct_free() <void ring_cb_struct_free (struct kref *ref) at route_hello.c:24>:
+            container_of()
+            ring_cb_struct
+            kfree()
+    kmalloc()
+    GFP_KERNEL
+    ENOMEM
+    kzalloc()
+    kfree()
+    ring_cb_struct_init() <void ring_cb_struct_init (struct ring_cb_struct *cb, void *buf) at route_hello.c:31>:
+        kref_init()
+        init_waitqueue_head()
+    copy_from_user()
+    EFAULT
+    free_buf
+    kref_get()
+    pguest_ring_add_buf()
+    false
+    pguest_ring_notify()
+    wait_event_interruptible()
+    kref_put()
+    ring_cb_struct_free() <void ring_cb_struct_free (struct kref *ref) at route_hello.c:24>:
+        container_of()
+        ring_cb_struct
+        kfree()
+route_hello_remove() <void route_hello_remove (struct pguest_mm_tunnel_dev *dev) at route_hello.c:214>:
+    dev_get_drvdata()
+    proc_remove()
+    pguest_ring_destroy()
+    kfree()
+    dev_set_drvdata()
+    NULL

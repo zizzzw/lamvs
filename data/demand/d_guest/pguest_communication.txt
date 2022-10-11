@@ -1,0 +1,33 @@
+exit_communication() <void __exit exit_communication (void) at pguest_communication.c:102>:
+    misc_deregister()
+    pguest_communication_dev <struct miscdevice pguest_communication_dev at pguest_communication.c:89>
+init() <int __init init (void) at pguest_communication.c:95>:
+    misc_register()
+    pguest_communication_dev <struct miscdevice pguest_communication_dev at pguest_communication.c:89>
+pguest_communication_ioctl() <long pguest_communication_ioctl (struct file *filp, unsigned int ioctl, unsigned long arg) at pguest_communication.c:20>:
+    r
+    ENOMEM
+    NULL
+    memdup_user()
+    IS_ERR()
+    PTR_ERR()
+    out
+    kfree()
+    pr_info()
+    PGUESTFS_IOCTL_PUBLISH_READ
+    pguestfs_publish()
+    PGUEST_PUBLISH_READ
+    PGUESTFS_IOCTL_PUBLISH_WRITE
+    PGUEST_PUBLISH_WRITE
+    PGUESTFS_IOCTL_UNPUBLISH
+    pguestfs_unpublish()
+    PGUESTFS_IOCTL_SUBSCRIBE_READ
+    pguestfs_subscribe()
+    PGUEST_SUBSCRIBE_READ
+    PGUESTFS_IOCTL_SUBSCRIBE_WRITE
+    PGUEST_SUBSCRIBE_WRITE
+    PGUESTFS_IOCTL_UNSUBSCRIBE
+    pguestfs_unsubscribe()
+    pguestfs_remove()
+pguest_communication_no_compat_ioctl() <long pguest_communication_no_compat_ioctl (struct file *filp, unsigned int ioctl, unsigned long arg) at pguest_communication.c:10>:
+    EINVAL

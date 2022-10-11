@@ -1,0 +1,35 @@
+pguest_transfer_data_accept_read() <void pguest_transfer_data_accept_read (void *opaque) at pguestfs_accept_read.c:37>:
+    buf_length
+    kzalloc()
+    GFP_KERNEL
+    __pguest_transfer_accept_read_free() <void __pguest_transfer_accept_read_free (struct pguest_ring *ring, void *opaque) at pguestfs_accept_read.c:31>:
+        kfree()
+    ssize_t
+    ret
+    pr_warning()
+    memcpy()
+    PGUEST_ACCEPT_READ
+    __pguest_vfs_read() <ssize_t __pguest_vfs_read (void *opaque) at pguestfs_accept_read.c:5>:
+        ssize_t
+        ret
+        EFAULT
+        mm_segment_t
+        fs
+        pr_info()
+        filp_open()
+        O_RDONLY
+        IS_ERR()
+        pr_warning()
+        PTR_ERR()
+        get_fs()
+        set_fs()
+        KERNEL_DS
+        vfs_read()
+        filp_close()
+        NULL
+    PGUEST_RESOURCE_NONEXIST
+    PGUEST_SUCCESS
+    pguest_ring_add_buf()
+    pguestfs_data_transfer
+    false
+    pguest_ring_notify()

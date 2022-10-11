@@ -1,0 +1,151 @@
+__pguest_mm_tunnel_register_driver() <int __pguest_mm_tunnel_register_driver (struct pguest_mm_tunnel_driver *drv, struct module *module, const char *name) at mm.c:322>:
+    mm_tunnel_bus_type <struct bus_type mm_tunnel_bus_type at mm.c:17>
+    driver_register()
+mm_tunnel_match() <int mm_tunnel_match (struct device *dev, struct device_driver *driver) at mm.c:79>:
+    to_mm_tunnel_dev()
+    to_mm_tunnel_drv()
+mm_tunnel_probe() <int mm_tunnel_probe (struct device *dev) at mm.c:99>:
+    to_mm_tunnel_dev()
+    to_mm_tunnel_drv()
+    pguest_mm_tunnel_get() <struct pguest_mm_tunnel_dev *pguest_mm_tunnel_get (struct pguest_mm_tunnel_dev *dev) at mm.c:56>:
+        get_device()
+    pguest_mm_tunnel_put() <void pguest_mm_tunnel_put (struct pguest_mm_tunnel_dev *dev) at mm.c:64>:
+        put_device()
+    NULL
+mm_tunnel_remove() <int mm_tunnel_remove (struct device *dev) at mm.c:86>:
+    to_mm_tunnel_dev()
+    pguest_mm_tunnel_get_parent_bus()
+    pguest_mm_tunnel_bus_remove_dev() <void pguest_mm_tunnel_bus_remove_dev (struct pguest_mm_tunnel_bus *bus, struct pguest_mm_tunnel_dev *dev) at mm.c:71>:
+        spin_lock()
+        list_del_rcu()
+        spin_unlock()
+    pguest_mm_tunnel_put() <void pguest_mm_tunnel_put (struct pguest_mm_tunnel_dev *dev) at mm.c:64>:
+        put_device()
+pguest_mm_exit() <void __exit pguest_mm_exit (void) at mm.c:350>:
+    bus_unregister()
+    mm_tunnel_bus_type <struct bus_type mm_tunnel_bus_type at mm.c:17>
+    pci_unregister_driver()
+    pguest_mm_driver <struct pguest_mm_driver pguest_mm_driver at mm.c:29>
+pguest_mm_init() <int __init pguest_mm_init (void) at mm.c:115>:
+    r
+    bus_register()
+    mm_tunnel_bus_type <struct bus_type mm_tunnel_bus_type at mm.c:17>
+    pci_register_driver()
+    pguest_mm_driver <struct pguest_mm_driver pguest_mm_driver at mm.c:29>
+    bus_unregister()
+pguest_mm_tunnel_bus_get() <struct pguest_mm_tunnel_bus *pguest_mm_tunnel_bus_get (struct pguest_mm_tunnel_bus *bus) at mm.c:40>:
+    get_device()
+pguest_mm_tunnel_unregister_driver() <void pguest_mm_tunnel_unregister_driver (struct pguest_mm_tunnel_driver *drv) at mm.c:336>:
+    driver_unregister()
+tunnel_dev_probe() <int tunnel_dev_probe (struct pci_dev *dev, const struct pci_device_id *ent) at mm.c:281>:
+    r
+    pci_enable_device()
+    disable_dev
+    kzalloc()
+    GFP_KERNEL
+    ENOMEM
+    pguest_mm_dev_init() <int pguest_mm_dev_init (struct pguest_mm_dev *dev, struct pci_dev *pci_dev) at mm.c:192>:
+        spin_lock_init()
+        pguest_mm_dev_release() <void pguest_mm_dev_release (struct device *dev) at mm.c:128>:
+            to_pguest_mm_dev()
+            pguest_mm_tunnel_bus_put() <void pguest_mm_tunnel_bus_put (struct pguest_mm_tunnel_bus *bus) at mm.c:48>:
+                put_device()
+            pci_iounmap()
+            free_irq()
+            pci_free_irq_vectors()
+            kfree()
+        atomic_inc_return()
+        pguest_mm_driver <struct pguest_mm_driver pguest_mm_driver at mm.c:29>
+        dev_set_name()
+        pci_iomap()
+        ENOMEM
+        pguest_mm_dev_alloc_irq() <int pguest_mm_dev_alloc_irq (struct pguest_mm_dev *dev) at mm.c:171>:
+            pci_set_dma_mask()
+            DMA_BIT_MASK()
+            pci_set_master()
+            pci_alloc_irq_vectors()
+            PCI_IRQ_ALL_TYPES
+            ENOSPC
+            pci_irq_vector()
+            request_threaded_irq()
+            NULL
+            mm_dev_irq_threaded_handler() <irqreturn_t mm_dev_irq_threaded_handler (int irq, void *dev_id) at mm.c:154>:
+                uint32_t
+                irq_index
+                irq_status
+                tunnel_dev_read32()
+                MM_CONFIG_TUNNEL_IRQ_INDEX
+                MM_CONFIG_TUNNEL_IRQ_STATUS
+                pguest_mm_dev_get_tunnel() <struct pguest_mm_tunnel_dev *pguest_mm_dev_get_tunnel (struct pguest_mm_dev *dev, uint32_t index) at mm.c:139>:
+                    NULL
+                    rcu_read_lock()
+                    list_for_each_entry_rcu()
+                    bus_list
+                    pguest_mm_tunnel_get() <struct pguest_mm_tunnel_dev *pguest_mm_tunnel_get (struct pguest_mm_tunnel_dev *dev) at mm.c:56>:
+                        get_device()
+                    rcu_read_unlock()
+                out
+                tunnel_dev_write32()
+                MM_CONFIG_TUNNEL_IRQ_ACK
+                pguest_mm_tunnel_put() <void pguest_mm_tunnel_put (struct pguest_mm_tunnel_dev *dev) at mm.c:64>:
+                    put_device()
+                IRQ_HANDLED
+            IRQF_SHARED
+            IRQF_ONESHOT
+            pci_free_irq_vectors()
+    free_mm
+    device_register()
+    free_dev
+    pguest_mm_dev_create_bus() <struct pguest_mm_tunnel_bus *pguest_mm_dev_create_bus (struct pguest_mm_dev *tunnel) at mm.c:266>:
+        kzalloc()
+        GFP_KERNEL
+        ERR_PTR()
+        ENOMEM
+        spin_lock_init()
+        INIT_LIST_HEAD()
+        pguest_mm_tunnel_bus_release() <void pguest_mm_tunnel_bus_release (struct device *dev) at mm.c:258>:
+            to_pguest_mm_tunnel_bus()
+            kfree()
+        dev_set_name()
+    IS_ERR()
+    PTR_ERR()
+    free_bus
+    pguest_mm_dev_alloc_tunnels() <void pguest_mm_dev_alloc_tunnels (struct pguest_mm_dev *dev) at mm.c:235>:
+        uint32_t
+        index_max
+        i
+        r
+        tunnel_dev_read32()
+        MM_CONFIG_TUNNEL_INDEX_MAX
+        tunnel_dev_write32()
+        MM_CONFIG_TUNNEL_SETUP
+        pr_info()
+        kzalloc()
+        GFP_KERNEL
+        pguest_mm_tunnel_init() <void pguest_mm_tunnel_init (struct pguest_mm_tunnel_dev *dev, struct pguest_mm_dev *mm, unsigned index) at mm.c:215>:
+            mm_tunnel_bus_type <struct bus_type mm_tunnel_bus_type at mm.c:17>
+            pguest_mm_tunnel_dev_release() <void pguest_mm_tunnel_dev_release (struct device *dev) at mm.c:209>:
+                to_mm_tunnel_dev()
+                kfree()
+            tunnel_read32()
+            MM_CONFIG_TUNNEL_FUNCTION
+            dev_set_name()
+        device_register()
+        likely()
+        pguest_mm_tunnel_bus_add_dev() <void pguest_mm_tunnel_bus_add_dev (struct pguest_mm_tunnel_bus *bus, struct pguest_mm_tunnel_dev *dev) at mm.c:227>:
+            spin_lock()
+            list_add_tail_rcu()
+            spin_unlock()
+        pguest_mm_tunnel_put() <void pguest_mm_tunnel_put (struct pguest_mm_tunnel_dev *dev) at mm.c:64>:
+            put_device()
+        pr_warning()
+    pci_set_drvdata()
+    pguest_mm_tunnel_bus_put() <void pguest_mm_tunnel_bus_put (struct pguest_mm_tunnel_bus *bus) at mm.c:48>:
+        put_device()
+    put_device()
+    kfree()
+    pci_disable_device()
+tunnel_dev_remove() <void tunnel_dev_remove (struct pci_dev *dev) at mm.c:342>:
+    pci_get_drvdata()
+    unlikely()
+    put_device()

@@ -1,0 +1,36 @@
+insert_communication_element() <struct communication_element *insert_communication_element (void *data) at communication_lru.c:39>:
+    NULL
+    pr_info()
+    alloc_communication_element() <struct communication_element *alloc_communication_element (void *data) at communication_lru.c:6>:
+        kmalloc()
+        GFP_KERNEL
+        ERR_PTR()
+        ENOMEM
+        kfree()
+        memcpy()
+        xxh64()
+        INIT_HLIST_NODE()
+        INIT_LIST_HEAD()
+    communication_cache
+    container_of()
+    communication_element
+    list
+    hash_del()
+    spin_lock()
+    list_del_rcu()
+    spin_unlock()
+    free_communication_element() <void free_communication_element (struct communication_element *element) at communication_lru.c:33>:
+        kfree()
+    list_add_rcu()
+    hash_add()
+query_communication_element() <struct communication_element *query_communication_element (void *data) at communication_lru.c:68>:
+    NULL
+    xxh64()
+    hash_for_each_possible_safe()
+    communication_cache
+    node
+    pr_info()
+    spin_lock()
+    list_del_rcu()
+    list_add_rcu()
+    spin_unlock()

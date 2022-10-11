@@ -1,0 +1,60 @@
+pguestfs_data_transfer_exit() <void __exit pguestfs_data_transfer_exit (void) at pguestfs_data_transfer.c:130>:
+    pguest_mm_tunnel_unregister_driver()
+    pguestfs_data_transfer_driver <struct pguest_mm_tunnel_driver pguestfs_data_transfer_driver at pguestfs_data_transfer.c:117>
+pguestfs_data_transfer_init() <int __init pguestfs_data_transfer_init (void) at pguestfs_data_transfer.c:125>:
+    pguest_mm_tunnel_register_driver()
+    pguestfs_data_transfer_driver <struct pguest_mm_tunnel_driver pguestfs_data_transfer_driver at pguestfs_data_transfer.c:117>
+pguestfs_data_transfer_irq_handler() <void pguestfs_data_transfer_irq_handler (struct pguest_mm_tunnel_dev *dev, uint32_t irq_status) at pguestfs_data_transfer.c:102>:
+    MM_INT_ERROR
+    pguestfs_data_transfer_handle_error() <void pguestfs_data_transfer_handle_error (struct pguest_mm_tunnel_dev *dev) at pguestfs_data_transfer.c:88>:
+        dev_get_drvdata()
+        uint32_t
+        error
+        tunnel_read32()
+        MM_CONFIG_TUNNEL_ERROR
+        TUNNEL_ERROR
+    MM_INT_DATA_HANDLED
+    pguestfs_data_transfer_handle_data() <void pguestfs_data_transfer_handle_data (struct pguest_mm_tunnel_dev *dev) at pguestfs_data_transfer.c:96>:
+        dev_get_drvdata()
+        pguest_ring_dequeue()
+    pr_warning()
+pguestfs_data_transfer_probe() <int pguestfs_data_transfer_probe (struct pguest_mm_tunnel_dev *dev) at pguestfs_data_transfer.c:54>:
+    ENOMEM
+    kzalloc()
+    GFP_KERNEL
+    pguestfs_data_transfer <struct pguestfs_data_transfer *pguestfs_data_transfer at pguestfs_data_transfer.c:8>
+    spin_lock_init()
+    pguest_ring_alloc()
+    set_ready_protocol()
+    free_pfs
+    dev_set_drvdata()
+    __ready_cb_handle_data() <void __ready_cb_handle_data (struct pguest_ring *ring, void *opaque, int64_t len) at pguestfs_data_transfer.c:27>:
+        kzalloc()
+        GFP_KERNEL
+        BUG_ON()
+        pr_warning()
+        memcpy()
+        PGUEST_READY
+        pguest_ring_add_buf()
+        pguestfs_data_transfer <struct pguestfs_data_transfer *pguestfs_data_transfer at pguestfs_data_transfer.c:8>
+        PAGE_SIZE
+        true
+        pguest_ring_notify()
+        pguest_transfer_data() <void pguest_transfer_data (void *opaque) at pguestfs_data_transfer.c:10>:
+            PGUEST_READ
+            pguest_transfer_data_accept_read()
+            PGUEST_WRITE
+            pguest_transfer_data_accept_write()
+            pr_warning()
+        kfree()
+    pguest_ring_add_buf()
+    PAGE_SIZE
+    true
+    pguest_ring_notify()
+    kfree()
+pguestfs_data_transfer_remove() <void pguestfs_data_transfer_remove (struct pguest_mm_tunnel_dev *dev) at pguestfs_data_transfer.c:79>:
+    dev_get_drvdata()
+    kfree()
+    pguest_ring_destroy()
+    dev_set_drvdata()
+    NULL

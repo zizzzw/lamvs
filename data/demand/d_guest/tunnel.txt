@@ -1,0 +1,19 @@
+tunnel_setup() <int tunnel_setup (struct pguest_mm_tunnel_dev *dev, void *share_mm, size_t len) at tunnel.c:3>:
+    virt_to_page()
+    pfn
+    __page_to_pfn()
+    sz
+    PAGE_SHIFT
+    uint32_t
+    err
+    tunnel_write32()
+    MM_CONFIG_TUNNEL_PFN
+    MM_CONFIG_TUNNEL_PFN_LEN
+    tunnel_read32()
+    MM_CONFIG_TUNNEL_ERROR
+    MM_ERROR_MEMORY_BIT
+    EFAULT
+    EIO
+    tunnel_destroy() <void tunnel_destroy (struct pguest_mm_tunnel_dev *dev) at tunnel.c:23>:
+        tunnel_write32()
+        MM_CONFIG_TUNNEL_PFN

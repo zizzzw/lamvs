@@ -1,0 +1,73 @@
+tunnel_hello_exit() <void __exit tunnel_hello_exit (void) at tunnel_hello.c:152>:
+    pguest_mm_tunnel_unregister_driver()
+    tunnel_hello_driver <struct pguest_mm_tunnel_driver tunnel_hello_driver at tunnel_hello.c:139>
+tunnel_hello_init() <int __init tunnel_hello_init (void) at tunnel_hello.c:147>:
+    pguest_mm_tunnel_register_driver()
+    tunnel_hello_driver <struct pguest_mm_tunnel_driver tunnel_hello_driver at tunnel_hello.c:139>
+tunnel_hello_irq_handler() <void tunnel_hello_irq_handler (struct pguest_mm_tunnel_dev *dev, uint32_t irq_status) at tunnel_hello.c:121>:
+    MM_INT_ERROR
+    tunnel_hello_handle_error() <void tunnel_hello_handle_error (struct pguest_mm_tunnel_dev *dev) at tunnel_hello.c:103>:
+        dev_get_drvdata()
+        uint32_t
+        error
+        tunnel_read32()
+        MM_CONFIG_TUNNEL_ERROR
+        TUNNEL_ERROR
+    MM_INT_DATA_READY
+    tunnel_hello_handle_data() <void tunnel_hello_handle_data (struct pguest_mm_tunnel_dev *dev) at tunnel_hello.c:112>:
+        dev_get_drvdata()
+        kfree()
+        kstrdup()
+        GFP_KERNEL
+        strlen()
+    MM_INT_TUNNEL_EMPTY
+    pr_warning()
+tunnel_hello_probe() <int tunnel_hello_probe (struct pguest_mm_tunnel_dev *dev) at tunnel_hello.c:61>:
+    kzalloc()
+    GFP_KERNEL
+    ENOMEM
+    __get_free_page()
+    free_tunnel
+    tunnel_setup()
+    PAGE_SIZE
+    free_page()
+    tunnel_hello_create_proc() <int tunnel_hello_create_proc (struct tunnel_hello *tunnel) at tunnel_hello.c:32>:
+        dn
+        dev_name()
+        kasprintf()
+        GFP_KERNEL
+        ENOMEM
+        proc_create_single_data()
+        NULL
+        tunnel_hello_proc_show() <int tunnel_hello_proc_show (struct seq_file *m, void *data) at tunnel_hello.c:22>:
+            TUNNEL_ERROR
+            seq_printf()
+        kfree()
+    destroy_tunnel
+    tunnel_hello_timer_init() <void tunnel_hello_timer_init (struct tunnel_hello *tunnel) at tunnel_hello.c:54>:
+        timer_setup()
+        tunnel_hello_generate_irq() <void tunnel_hello_generate_irq (struct timer_list *timer) at tunnel_hello.c:47>:
+            from_timer()
+            tunnel_write32()
+            MM_CONFIG_TUNNEL_CONSUME
+            mod_timer()
+            jiffies
+            msecs_to_jiffies()
+            POLL_INTERVAL
+        add_timer()
+        mod_timer()
+        jiffies
+        msecs_to_jiffies()
+        POLL_INTERVAL
+    dev_set_drvdata()
+    tunnel_destroy()
+    kfree()
+tunnel_hello_remove() <void tunnel_hello_remove (struct pguest_mm_tunnel_dev *dev) at tunnel_hello.c:91>:
+    dev_get_drvdata()
+    proc_remove()
+    del_timer()
+    tunnel_destroy()
+    free_page()
+    kfree()
+    dev_set_drvdata()
+    NULL

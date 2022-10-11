@@ -1,0 +1,15 @@
+controller_consumer_cb <const struct tunnel_route_cb controller_consumer_cb at controller.c:50>
+controller_consumer_consume() <ssize_t controller_consumer_consume (struct data_port *self, struct data_port *other) at controller.c:10>:
+    ssize_t
+    ret
+    memcpy()
+    copy_to_user()
+    EFAULT
+    kfree()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+controller_consumer_match() <int controller_consumer_match (struct data_port *self, struct data_port *other) at controller.c:5>
+controller_producer_cb <const struct tunnel_route_cb controller_producer_cb at controller.c:46>
+controller_producer_consumed_notifier() <void controller_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at controller.c:37>:
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()

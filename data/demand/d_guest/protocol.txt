@@ -1,0 +1,74 @@
+pguest_publish_protocol() <void *pguest_publish_protocol (const char *name, size_t size, SecurityLevel level, Action action) at protocol.c:33>:
+    pguest_publish_subscribe_protocol() <void *pguest_publish_subscribe_protocol (const char *name, size_t size, SecurityLevel level) at protocol.c:16>:
+        kzalloc()
+        GFP_KERNEL
+        NULL
+        memcpy()
+        jiffies
+    NULL
+pguest_subscribe_protocol() <void *pguest_subscribe_protocol (const char *name, size_t size, SecurityLevel level, Action action) at protocol.c:54>:
+    pguest_publish_subscribe_protocol() <void *pguest_publish_subscribe_protocol (const char *name, size_t size, SecurityLevel level) at protocol.c:16>:
+        kzalloc()
+        GFP_KERNEL
+        NULL
+        memcpy()
+        jiffies
+    NULL
+pguest_unpublish_protocol() <void *pguest_unpublish_protocol (const char *name, size_t size, SecurityLevel level) at protocol.c:43>:
+    pguest_publish_subscribe_protocol() <void *pguest_publish_subscribe_protocol (const char *name, size_t size, SecurityLevel level) at protocol.c:16>:
+        kzalloc()
+        GFP_KERNEL
+        NULL
+        memcpy()
+        jiffies
+    NULL
+    PGUEST_UNPUBLISH
+pguest_unsubscribe_protocol() <void *pguest_unsubscribe_protocol (const char *name, size_t size, SecurityLevel level) at protocol.c:65>:
+    pguest_publish_subscribe_protocol() <void *pguest_publish_subscribe_protocol (const char *name, size_t size, SecurityLevel level) at protocol.c:16>:
+        kzalloc()
+        GFP_KERNEL
+        NULL
+        memcpy()
+        jiffies
+    NULL
+    PGUEST_UNSUBSCRIBE
+pguestfs_read_data_protocol() <void *pguestfs_read_data_protocol (struct protocol_header *info, size_t size, long offset) at protocol.c:76>:
+    buf_length
+    kzalloc()
+    GFP_KERNEL
+    NULL
+    PGUEST_READ
+    jiffies
+    memcpy()
+pguestfs_read_info_protocol() <void *pguestfs_read_info_protocol (struct protocol_header *info, size_t size, long offset) at protocol.c:99>:
+    buf_length
+    kzalloc()
+    GFP_KERNEL
+    NULL
+    PGUEST_READ
+    jiffies
+    memcpy()
+    pr_info()
+pguestfs_write_data_protocol() <void *pguestfs_write_data_protocol (struct protocol_header *info, size_t size, long offset) at protocol.c:121>:
+    buf_length
+    kzalloc()
+    GFP_KERNEL
+    NULL
+    PGUEST_WRITE
+    jiffies
+    memcpy()
+pguestfs_write_result_protocol() <void *pguestfs_write_result_protocol (struct protocol_header *info, size_t size, long offset) at protocol.c:143>:
+    buf_length
+    kzalloc()
+    GFP_KERNEL
+    NULL
+    PGUEST_WRITE
+    jiffies
+    memcpy()
+set_ready_protocol() <void *set_ready_protocol (void) at protocol.c:5>:
+    __get_free_page()
+    GFP_KERNEL
+    NULL
+    PGUEST_READY
+    PAGE_SIZE
+    jiffies

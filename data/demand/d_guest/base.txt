@@ -1,0 +1,33 @@
+pguestfs_no_compat_ioctl() <long pguestfs_no_compat_ioctl (struct file *filp, unsigned int ioctl, unsigned long arg) at base.c:10>:
+    EINVAL
+pguestfs_protocol_fops <const struct file_operations pguestfs_protocol_fops at base.c:94>
+pguestfs_protocol_open() <int pguestfs_protocol_open (struct inode *inode, struct file *filp) at base.c:75>:
+    PGDE_DATA()
+    S_IWUSR
+    FMODE_READ
+    pr_warning()
+    EPERM
+    S_IRUSR
+    FMODE_WRITE
+pguestfs_protocol_read() <ssize_t pguestfs_protocol_read (struct file *filp, char __user *buffer, size_t count, loff_t *ppos) at base.c:18>:
+    ssize_t
+    ret
+    tmp
+    bool
+    flag
+    true
+    pr_info()
+    ktime_get_real_ns()
+    send_out_protocol_read()
+    false
+pguestfs_protocol_write() <ssize_t pguestfs_protocol_write (struct file *filp, const char __user *buffer, size_t count, loff_t *ppos) at base.c:46>:
+    ssize_t
+    ret
+    tmp
+    bool
+    flag
+    true
+    pr_info()
+    ktime_get_real_ns()
+    send_out_protocol_write()
+    false

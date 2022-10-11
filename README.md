@@ -23,11 +23,20 @@ Java source code of LAMVS.
 C code of two examples(VFS and QiHang Kernel), tools extract design from here. 
 
 **-data:**  
-Demands and designing data of QiHang Kernel extracted automatically by tools.
+
++ -source  
++ the source code of Linux Kernel and QiHang Kernel, IDLT work in this directory, it generate several .txt files for each .c file.  
++ -demand  
++ Demands data extracted automatically by cflow.  
++ -db  
++ All the data of lamvs in mysql database.    
 
 **-tools:**  
-(1)Import Design from Linux Code Tool(IDLT): Write by our team, use regular expressions and other methods to extract designing data from the Linux Kernel source code.  
-(2)cflow: A slightly changed version of GNU cflow, analyzes Linux Kernel files and prints function calls and generate demands finally.
+
++ -IDLT
+  + Import Design from Linux Code Tool(IDLT), finish by our team, use regular expressions and other methods to extract designing data from the Linux Kernel source code.    
++ -cflow
+  + A slightly changed version of GNU cflow, analyzes Linux Kernel files and prints function calls and generate demands finally.
 
 
 ## Run
@@ -68,8 +77,15 @@ Actually, the same effect can be achieve by enter the following link in sequence
 
 ## Example2: QiHang Kernel 
 
+the 1st property you should change is the absolute path of the lamvs root :
+
+root=D:\java\
+
+put the source code in this directory, we have been put the guest_small for example:
+
+lamvs/data/source
 
 
 
-
+several days needed to finish the total source code of guest, in order to finish the example in 5 minutes, we take out part of the guest, it could show the same effect. 
 

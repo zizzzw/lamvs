@@ -1,0 +1,55 @@
+write_request_data_producer_consumed_notifier() <void write_request_data_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at process_write.c:70>:
+    write_response_data_producer_cb <const struct tunnel_route_cb write_response_data_producer_cb at process_write.c:65>
+    phost_route_add_producer()
+    PHOST_DATA_ROUTE
+    IS_ERR()
+    data_port_put()
+    pr_info()
+    ktime_get_real_ns()
+write_request_target_producer_cb <const struct tunnel_route_cb write_request_target_producer_cb at process_write.c:164>
+write_request_target_producer_consumed_notifier() <void write_request_target_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at process_write.c:150>:
+    write_response_target_consumer_cb <const struct tunnel_route_cb write_response_target_consumer_cb at process_write.c:144>
+    phost_route_add_consumer()
+    PHOST_DATA_ROUTE
+    IS_ERR()
+    data_port_put()
+    pr_info()
+write_response_data_consumer_cb <const struct tunnel_route_cb write_response_data_consumer_cb at process_write.c:41>
+write_response_data_consumer_consume() <ssize_t write_response_data_consumer_consume (struct data_port *self, struct data_port *other) at process_write.c:16>:
+    buf_length
+    memcpy()
+    PHOST_SUCCESS
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+write_response_data_consumer_match() <int write_response_data_consumer_match (struct data_port *self, struct data_port *other) at process_write.c:6>:
+    PHOST_ACCEPT_WRITE
+    PHOST_WRITE
+write_response_data_producer_consumed_notifier() <void write_response_data_producer_consumed_notifier (struct data_port *self, struct data_port *other, ssize_t consumed) at process_write.c:46>:
+    PHOST_SUCCESS
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+    pr_info()
+    ktime_get_real_ns()
+write_response_target_consumer_consume() <ssize_t write_response_target_consumer_consume (struct data_port *self, struct data_port *other) at process_write.c:101>:
+    NULL
+    write_request_data_producer_cb <const struct tunnel_route_cb write_request_data_producer_cb at process_write.c:87>
+    PHOST_SUCCESS
+    memcpy()
+    phost_route_add_producer()
+    PHOST_DATA_ROUTE
+    IS_ERR()
+    data_port_put()
+    insert_communication_element()
+    pr_info()
+    kzalloc()
+    GFP_KERNEL
+    copy_to_user()
+    pr_warning()
+    phost_ring_add_used()
+    __phost_tunnel_signal_user()
+    kfree()
+write_response_target_consumer_match() <int write_response_target_consumer_match (struct data_port *self, struct data_port *other) at process_write.c:92>
