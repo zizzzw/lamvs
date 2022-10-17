@@ -8,7 +8,7 @@ import com.dynamic_validate.entity.DemandInvoke;
 import com.dynamic_validate.entity.DemandPath;
 import com.dynamic_validate.entity.SamlType;
 import com.dynamic_validate.service.*;
-import com.example.dynamic_validate.service.*;
+import com.dynamic_validate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

@@ -178,7 +178,7 @@ public class Data {
 
     public static final String source = "D:\\java\\doxygen\\project\\source\\";// 需求txt文件所在目录
     public static final String source_linux = source + "linux";// 需求txt文件所在目录
-    public static final String source_guest = source + "guest_small1";// 需求txt文件所在目录
+    public static final String source_guest = source + "guest_small";// 需求txt文件所在目录
     //public static final String source_guest = source + "guest";// 需求txt文件所在目录
     //public static final String source_guest = source+"test_guest1";// 需求txt文件所在目录
     public static final String source_host = source + "host";// 需求txt文件所在目录

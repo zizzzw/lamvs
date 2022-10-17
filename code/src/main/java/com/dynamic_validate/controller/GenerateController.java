@@ -3,7 +3,7 @@ package com.dynamic_validate.controller;
 import com.dynamic_validate.dao.SamlTypeDao;
 import com.dynamic_validate.data.Data;
 import com.dynamic_validate.service.*;
-import com.example.dynamic_validate.service.*;
+import com.dynamic_validate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

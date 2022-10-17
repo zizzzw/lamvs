@@ -1,7 +1,7 @@
 package com.dynamic_validate.controller;
 
 import com.dynamic_validate.dao.*;
-import com.example.dynamic_validate.dao.*;
+import com.dynamic_validate.dao.*;
 import com.dynamic_validate.entity.Project;
 import com.dynamic_validate.entity.SamlType;
 import com.dynamic_validate.entity.SamlTypeLevel;

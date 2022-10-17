@@ -5,7 +5,7 @@ import com.dynamic_validate.dao.SamlTypeDao;
 import com.dynamic_validate.dao.TypeLackDao;
 import com.dynamic_validate.data.Data;
 import com.dynamic_validate.entity.*;
-import com.example.dynamic_validate.entity.*;
+import com.dynamic_validate.entity.*;
 import com.dynamic_validate.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
