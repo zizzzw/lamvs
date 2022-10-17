@@ -1,0 +1,8 @@
+static inline void rcu_read_lock(void) 
+static inline void rcu_read_unlock(void) 
+static inline void rcu_read_lock_bh(void) 
+static inline void rcu_read_unlock_bh(void) 
+static inline void rcu_read_lock_sched(void) 
+static inline notrace void rcu_read_lock_sched_notrace(void) 
+static inline void rcu_read_unlock_sched(void) 
+static inline notrace void rcu_read_unlock_sched_notrace(void) 

@@ -1,0 +1,8 @@
+static unsigned int i_hash_mask __read_mostly; 
+static unsigned int i_hash_shift __read_mostly; 
+static struct hlist_head *inode_hashtable __read_mostly; 
+const struct address_space_operations empty_aops = { 
+}; 
+struct inodes_stat_t inodes_stat; 
+static struct kmem_cache *inode_cachep __read_mostly; 
+static __initdata unsigned long ihash_entries; 

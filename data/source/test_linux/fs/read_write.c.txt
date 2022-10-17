@@ -1,0 +1,105 @@
+include/linux/slab.h
+include/linux/stat.h
+include/linux/sched/xacct.h
+include/linux/fcntl.h
+include/linux/file.h
+include/linux/uio.h
+include/linux/fsnotify.h
+include/linux/security.h
+include/linux/export.h
+include/linux/syscalls.h
+include/linux/pagemap.h
+include/linux/splice.h
+include/linux/compat.h
+include/linux/mount.h
+include/linux/fs.h
+?/internal.h
+include/linux/uaccess.h
+include/asm/unistd.h
+const struct file_operations generic_ro_fops = { 
+.llseek		= generic_file_llseek, .read_iter	= generic_file_read_iter, .mmap		= generic_file_readonly_mmap, .splice_read	= generic_file_splice_read, }; 
+EXPORT_SYMBOL(generic_ro_fops); 
+static inline bool unsigned_offsets(struct file *file) 
+loff_t vfs_setpos(struct file *file, loff_t offset, loff_t maxsize) 
+EXPORT_SYMBOL(vfs_setpos); 
+loff_t generic_file_llseek_size(struct file *file, loff_t offset, int whence, loff_t maxsize, loff_t eof) 
+EXPORT_SYMBOL(generic_file_llseek_size); 
+loff_t generic_file_llseek(struct file *file, loff_t offset, int whence) 
+EXPORT_SYMBOL(generic_file_llseek); 
+loff_t fixed_size_llseek(struct file *file, loff_t offset, int whence, loff_t size) 
+EXPORT_SYMBOL(fixed_size_llseek); 
+loff_t no_seek_end_llseek(struct file *file, loff_t offset, int whence) 
+EXPORT_SYMBOL(no_seek_end_llseek); 
+loff_t no_seek_end_llseek_size(struct file *file, loff_t offset, int whence, loff_t size) 
+EXPORT_SYMBOL(no_seek_end_llseek_size); 
+loff_t noop_llseek(struct file *file, loff_t offset, int whence) 
+EXPORT_SYMBOL(noop_llseek); 
+loff_t no_llseek(struct file *file, loff_t offset, int whence) 
+EXPORT_SYMBOL(no_llseek); 
+loff_t default_llseek(struct file *file, loff_t offset, int whence) 
+EXPORT_SYMBOL(default_llseek); 
+loff_t vfs_llseek(struct file *file, loff_t offset, int whence) 
+EXPORT_SYMBOL(vfs_llseek); 
+off_t ksys_lseek(unsigned int fd, off_t offset, unsigned int whence) 
+SYSCALL_DEFINE3(lseek, unsigned int, fd, off_t, offset, unsigned int, whence) 
+int rw_verify_area(int read_write, struct file *file, const loff_t *ppos, size_t count) 
+static ssize_t new_sync_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos) 
+ssize_t __vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos) 
+ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos) 
+EXPORT_SYMBOL(kernel_read); 
+ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos) 
+static ssize_t new_sync_write(struct file *filp, const char __user *buf, size_t len, loff_t *ppos) 
+ssize_t __vfs_write(struct file *file, const char __user *p, size_t count, loff_t *pos) 
+ssize_t __kernel_write(struct file *file, const void *buf, size_t count, loff_t *pos) 
+EXPORT_SYMBOL(__kernel_write); 
+ssize_t kernel_write(struct file *file, const void *buf, size_t count, loff_t *pos) 
+EXPORT_SYMBOL(kernel_write); 
+ssize_t vfs_write(struct file *file, const char __user *buf, size_t count, loff_t *pos) 
+static inline loff_t file_pos_read(struct file *file) 
+static inline void file_pos_write(struct file *file, loff_t pos) 
+ssize_t ksys_read(unsigned int fd, char __user *buf, size_t count) 
+SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count) 
+ssize_t ksys_write(unsigned int fd, const char __user *buf, size_t count) 
+SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf, size_t, count) 
+ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count, loff_t pos) 
+SYSCALL_DEFINE4(pread64, unsigned int, fd, char __user *, buf, size_t, count, loff_t, pos) 
+ssize_t ksys_pwrite64(unsigned int fd, const char __user *buf, size_t count, loff_t pos) 
+SYSCALL_DEFINE4(pwrite64, unsigned int, fd, const char __user *, buf, size_t, count, loff_t, pos) 
+static ssize_t do_iter_readv_writev(struct file *filp, struct iov_iter *iter, loff_t *ppos, int type, rwf_t flags) 
+static ssize_t do_loop_readv_writev(struct file *filp, struct iov_iter *iter, loff_t *ppos, int type, rwf_t flags) 
+ssize_t rw_copy_check_uvector(int type, const struct iovec __user * uvector, unsigned long nr_segs, unsigned long fast_segs, struct iovec *fast_pointer, struct iovec **ret_pointer) 
+static ssize_t do_iter_read(struct file *file, struct iov_iter *iter, loff_t *pos, rwf_t flags) 
+ssize_t vfs_iter_read(struct file *file, struct iov_iter *iter, loff_t *ppos, rwf_t flags) 
+EXPORT_SYMBOL(vfs_iter_read); 
+static ssize_t do_iter_write(struct file *file, struct iov_iter *iter, loff_t *pos, rwf_t flags) 
+ssize_t vfs_iter_write(struct file *file, struct iov_iter *iter, loff_t *ppos, rwf_t flags) 
+EXPORT_SYMBOL(vfs_iter_write); 
+ssize_t vfs_readv(struct file *file, const struct iovec __user *vec, unsigned long vlen, loff_t *pos, rwf_t flags) 
+static ssize_t vfs_writev(struct file *file, const struct iovec __user *vec, unsigned long vlen, loff_t *pos, rwf_t flags) 
+static ssize_t do_readv(unsigned long fd, const struct iovec __user *vec, unsigned long vlen, rwf_t flags) 
+static ssize_t do_writev(unsigned long fd, const struct iovec __user *vec, unsigned long vlen, rwf_t flags) 
+static inline loff_t pos_from_hilo(unsigned long high, unsigned long low) 
+static ssize_t do_preadv(unsigned long fd, const struct iovec __user *vec, unsigned long vlen, loff_t pos, rwf_t flags) 
+static ssize_t do_pwritev(unsigned long fd, const struct iovec __user *vec, unsigned long vlen, loff_t pos, rwf_t flags) 
+SYSCALL_DEFINE3(readv, unsigned long, fd, const struct iovec __user *, vec, unsigned long, vlen) 
+SYSCALL_DEFINE3(writev, unsigned long, fd, const struct iovec __user *, vec, unsigned long, vlen) 
+SYSCALL_DEFINE5(preadv, unsigned long, fd, const struct iovec __user *, vec, unsigned long, vlen, unsigned long, pos_l, unsigned long, pos_h) 
+SYSCALL_DEFINE6(preadv2, unsigned long, fd, const struct iovec __user *, vec, unsigned long, vlen, unsigned long, pos_l, unsigned long, pos_h, rwf_t, flags) 
+SYSCALL_DEFINE5(pwritev, unsigned long, fd, const struct iovec __user *, vec, unsigned long, vlen, unsigned long, pos_l, unsigned long, pos_h) 
+SYSCALL_DEFINE6(pwritev2, unsigned long, fd, const struct iovec __user *, vec, unsigned long, vlen, unsigned long, pos_l, unsigned long, pos_h, rwf_t, flags) 
+static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos, size_t count, loff_t max) 
+SYSCALL_DEFINE4(sendfile, int, out_fd, int, in_fd, off_t __user *, offset, size_t, count) 
+SYSCALL_DEFINE4(sendfile64, int, out_fd, int, in_fd, loff_t __user *, offset, size_t, count) 
+ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in, struct file *file_out, loff_t pos_out, size_t len, unsigned int flags) 
+EXPORT_SYMBOL(vfs_copy_file_range); 
+SYSCALL_DEFINE6(copy_file_range, int, fd_in, loff_t __user *, off_in, int, fd_out, loff_t __user *, off_out, size_t, len, unsigned int, flags) 
+static int clone_verify_area(struct file *file, loff_t pos, u64 len, bool write) 
+int vfs_clone_file_prep_inodes(struct inode *inode_in, loff_t pos_in, struct inode *inode_out, loff_t pos_out, u64 *len, bool is_dedupe) 
+EXPORT_SYMBOL(vfs_clone_file_prep_inodes); 
+int vfs_clone_file_range(struct file *file_in, loff_t pos_in, struct file *file_out, loff_t pos_out, u64 len) 
+EXPORT_SYMBOL(vfs_clone_file_range); 
+static struct page *vfs_dedupe_get_page(struct inode *inode, loff_t offset) 
+int vfs_dedupe_file_range_compare(struct inode *src, loff_t srcoff, struct inode *dest, loff_t destoff, loff_t len, bool *is_same) 
+EXPORT_SYMBOL(vfs_dedupe_file_range_compare); 
+int vfs_dedupe_file_range(struct file *file, struct file_dedupe_range *same) 
+EXPORT_SYMBOL(vfs_dedupe_file_range); 

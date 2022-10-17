@@ -1,0 +1,7 @@
+static DEFINE_SPINLOCK(grace_lock); 
+EXPORT_SYMBOL_GPL(locks_start_grace); 
+EXPORT_SYMBOL_GPL(locks_end_grace); 
+EXPORT_SYMBOL_GPL(locks_in_grace); 
+EXPORT_SYMBOL_GPL(opens_in_grace); 
+MODULE_AUTHOR("Jeff Layton <jlayton@primarydata.com>"); 
+MODULE_LICENSE("GPL"); 

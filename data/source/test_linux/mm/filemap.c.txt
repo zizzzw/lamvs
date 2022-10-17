@@ -1,0 +1,161 @@
+include/linux/export.h
+include/linux/compiler.h
+include/linux/dax.h
+include/linux/fs.h
+include/linux/sched/signal.h
+include/linux/uaccess.h
+include/linux/capability.h
+include/linux/kernel_stat.h
+include/linux/gfp.h
+include/linux/mm.h
+include/linux/swap.h
+include/linux/mman.h
+include/linux/pagemap.h
+include/linux/file.h
+include/linux/uio.h
+include/linux/hash.h
+include/linux/writeback.h
+include/linux/backing-dev.h
+include/linux/pagevec.h
+include/linux/blkdev.h
+include/linux/security.h
+include/linux/cpuset.h
+include/linux/hugetlb.h
+include/linux/memcontrol.h
+include/linux/cleancache.h
+include/linux/shmem_fs.h
+include/linux/rmap.h
+?/internal.h
+include/trace/events/filemap.h
+include/linux/buffer_head.h
+include/asm/mman.h
+static int page_cache_tree_insert(struct address_space *mapping, struct page *page, void **shadowp) 
+static void page_cache_tree_delete(struct address_space *mapping, struct page *page, void *shadow) 
+static void unaccount_page_cache_page(struct address_space *mapping, struct page *page) 
+void __delete_from_page_cache(struct page *page, void *shadow) 
+static void page_cache_free_page(struct address_space *mapping, struct page *page) 
+void delete_from_page_cache(struct page *page) 
+EXPORT_SYMBOL(delete_from_page_cache); 
+static void page_cache_tree_delete_batch(struct address_space *mapping, struct pagevec *pvec) 
+void delete_from_page_cache_batch(struct address_space *mapping, struct pagevec *pvec) 
+int filemap_check_errors(struct address_space *mapping) 
+EXPORT_SYMBOL(filemap_check_errors); 
+static int filemap_check_and_keep_errors(struct address_space *mapping) 
+int __filemap_fdatawrite_range(struct address_space *mapping, loff_t start, loff_t end, int sync_mode) 
+static inline int __filemap_fdatawrite(struct address_space *mapping, int sync_mode) 
+int filemap_fdatawrite(struct address_space *mapping) 
+EXPORT_SYMBOL(filemap_fdatawrite); 
+int filemap_fdatawrite_range(struct address_space *mapping, loff_t start, loff_t end) 
+EXPORT_SYMBOL(filemap_fdatawrite_range); 
+int filemap_flush(struct address_space *mapping) 
+EXPORT_SYMBOL(filemap_flush); 
+bool filemap_range_has_page(struct address_space *mapping, loff_t start_byte, loff_t end_byte) 
+EXPORT_SYMBOL(filemap_range_has_page); 
+static void __filemap_fdatawait_range(struct address_space *mapping, loff_t start_byte, loff_t end_byte) 
+int filemap_fdatawait_range(struct address_space *mapping, loff_t start_byte, loff_t end_byte) 
+EXPORT_SYMBOL(filemap_fdatawait_range); 
+int file_fdatawait_range(struct file *file, loff_t start_byte, loff_t end_byte) 
+EXPORT_SYMBOL(file_fdatawait_range); 
+int filemap_fdatawait_keep_errors(struct address_space *mapping) 
+EXPORT_SYMBOL(filemap_fdatawait_keep_errors); 
+static bool mapping_needs_writeback(struct address_space *mapping) 
+int filemap_write_and_wait(struct address_space *mapping) 
+EXPORT_SYMBOL(filemap_write_and_wait); 
+int filemap_write_and_wait_range(struct address_space *mapping, loff_t lstart, loff_t lend) 
+EXPORT_SYMBOL(filemap_write_and_wait_range); 
+void __filemap_set_wb_err(struct address_space *mapping, int err) 
+EXPORT_SYMBOL(__filemap_set_wb_err); 
+int file_check_and_advance_wb_err(struct file *file) 
+EXPORT_SYMBOL(file_check_and_advance_wb_err); 
+int file_write_and_wait_range(struct file *file, loff_t lstart, loff_t lend) 
+EXPORT_SYMBOL(file_write_and_wait_range); 
+int replace_page_cache_page(struct page *old, struct page *new, gfp_t gfp_mask) 
+EXPORT_SYMBOL_GPL(replace_page_cache_page); 
+static int __add_to_page_cache_locked(struct page *page, struct address_space *mapping, pgoff_t offset, gfp_t gfp_mask, void **shadowp) 
+int add_to_page_cache_locked(struct page *page, struct address_space *mapping, pgoff_t offset, gfp_t gfp_mask) 
+EXPORT_SYMBOL(add_to_page_cache_locked); 
+int add_to_page_cache_lru(struct page *page, struct address_space *mapping, pgoff_t offset, gfp_t gfp_mask) 
+EXPORT_SYMBOL_GPL(add_to_page_cache_lru); 
+static wait_queue_head_t page_wait_table[PAGE_WAIT_TABLE_SIZE] __cacheline_aligned; 
+static wait_queue_head_t *page_waitqueue(struct page *page) 
+void __init pagecache_init(void) 
+struct wait_page_key {
+struct page *page; 
+int bit_nr; 
+int page_match; 
+};
+struct wait_page_queue {
+struct page *page; 
+int bit_nr; 
+wait_queue_entry_t wait; 
+};
+static int wake_page_function(wait_queue_entry_t *wait, unsigned mode, int sync, void *arg) 
+static void wake_up_page_bit(struct page *page, int bit_nr) 
+static void wake_up_page(struct page *page, int bit) 
+static inline int wait_on_page_bit_common(wait_queue_head_t *q, struct page *page, int bit_nr, int state, bool lock) 
+void wait_on_page_bit(struct page *page, int bit_nr) 
+EXPORT_SYMBOL(wait_on_page_bit); 
+int wait_on_page_bit_killable(struct page *page, int bit_nr) 
+EXPORT_SYMBOL(wait_on_page_bit_killable); 
+void add_page_wait_queue(struct page *page, wait_queue_entry_t *waiter) 
+EXPORT_SYMBOL_GPL(add_page_wait_queue); 
+void unlock_page(struct page *page) 
+EXPORT_SYMBOL(unlock_page); 
+void end_page_writeback(struct page *page) 
+EXPORT_SYMBOL(end_page_writeback); 
+void page_endio(struct page *page, bool is_write, int err) 
+EXPORT_SYMBOL_GPL(page_endio); 
+void __lock_page(struct page *__page) 
+EXPORT_SYMBOL(__lock_page); 
+int __lock_page_killable(struct page *__page) 
+EXPORT_SYMBOL_GPL(__lock_page_killable); 
+int __lock_page_or_retry(struct page *page, struct mm_struct *mm, unsigned int flags) 
+pgoff_t page_cache_next_hole(struct address_space *mapping, pgoff_t index, unsigned long max_scan) 
+EXPORT_SYMBOL(page_cache_next_hole); 
+pgoff_t page_cache_prev_hole(struct address_space *mapping, pgoff_t index, unsigned long max_scan) 
+EXPORT_SYMBOL(page_cache_prev_hole); 
+struct page *find_get_entry(struct address_space *mapping, pgoff_t offset) 
+EXPORT_SYMBOL(find_get_entry); 
+struct page *find_lock_entry(struct address_space *mapping, pgoff_t offset) 
+EXPORT_SYMBOL(find_lock_entry); 
+struct page *pagecache_get_page(struct address_space *mapping, pgoff_t offset, int fgp_flags, gfp_t gfp_mask) 
+EXPORT_SYMBOL(pagecache_get_page); 
+unsigned find_get_entries(struct address_space *mapping, pgoff_t start, unsigned int nr_entries, struct page **entries, pgoff_t *indices) 
+unsigned find_get_pages_range(struct address_space *mapping, pgoff_t *start, pgoff_t end, unsigned int nr_pages, struct page **pages) 
+unsigned find_get_pages_contig(struct address_space *mapping, pgoff_t index, unsigned int nr_pages, struct page **pages) 
+EXPORT_SYMBOL(find_get_pages_contig); 
+unsigned find_get_pages_range_tag(struct address_space *mapping, pgoff_t *index, pgoff_t end, int tag, unsigned int nr_pages, struct page **pages) 
+EXPORT_SYMBOL(find_get_pages_range_tag); 
+unsigned find_get_entries_tag(struct address_space *mapping, pgoff_t start, int tag, unsigned int nr_entries, struct page **entries, pgoff_t *indices) 
+EXPORT_SYMBOL(find_get_entries_tag); 
+static void shrink_readahead_size_eio(struct file *filp, struct file_ra_state *ra) 
+static ssize_t generic_file_buffered_read(struct kiocb *iocb, struct iov_iter *iter, ssize_t written) 
+ssize_t generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter) 
+EXPORT_SYMBOL(generic_file_read_iter); 
+EXPORT_SYMBOL(filemap_page_mkwrite); 
+EXPORT_SYMBOL(generic_file_mmap); 
+EXPORT_SYMBOL(generic_file_readonly_mmap); 
+static struct page *wait_on_page_read(struct page *page) 
+static struct page *do_read_cache_page(struct address_space *mapping, pgoff_t index, int (*filler)(void *, struct page *), void *data, gfp_t gfp) 
+struct page *read_cache_page(struct address_space *mapping, pgoff_t index, int (*filler)(void *, struct page *), void *data) 
+EXPORT_SYMBOL(read_cache_page); 
+struct page *read_cache_page_gfp(struct address_space *mapping, pgoff_t index, gfp_t gfp) 
+EXPORT_SYMBOL(read_cache_page_gfp); 
+inline ssize_t generic_write_checks(struct kiocb *iocb, struct iov_iter *from) 
+EXPORT_SYMBOL(generic_write_checks); 
+int pagecache_write_begin(struct file *file, struct address_space *mapping, loff_t pos, unsigned len, unsigned flags, struct page **pagep, void **fsdata) 
+EXPORT_SYMBOL(pagecache_write_begin); 
+int pagecache_write_end(struct file *file, struct address_space *mapping, loff_t pos, unsigned len, unsigned copied, struct page *page, void *fsdata) 
+EXPORT_SYMBOL(pagecache_write_end); 
+ssize_t generic_file_direct_write(struct kiocb *iocb, struct iov_iter *from) 
+EXPORT_SYMBOL(generic_file_direct_write); 
+struct page *grab_cache_page_write_begin(struct address_space *mapping, pgoff_t index, unsigned flags) 
+EXPORT_SYMBOL(grab_cache_page_write_begin); 
+ssize_t generic_perform_write(struct file *file, struct iov_iter *i, loff_t pos) 
+EXPORT_SYMBOL(generic_perform_write); 
+ssize_t __generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from) 
+EXPORT_SYMBOL(__generic_file_write_iter); 
+ssize_t generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from) 
+EXPORT_SYMBOL(generic_file_write_iter); 
+int try_to_release_page(struct page *page, gfp_t gfp_mask) 
+EXPORT_SYMBOL(try_to_release_page); 

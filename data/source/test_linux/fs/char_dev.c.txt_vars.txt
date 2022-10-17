@@ -1,0 +1,15 @@
+static struct kobj_map *cdev_map; 
+static struct char_device_struct { 
+struct char_device_struct *next; 
+unsigned int major; 
+unsigned int baseminor; 
+int minorct; 
+char name[64]; 
+struct cdev *cdev; 
+} *chrdevs[CHRDEV_MAJOR_HASH_SIZE]; 
+const struct file_operations def_chr_fops = { 
+.open = chrdev_open, .llseek = noop_llseek, }; 
+static struct kobj_type ktype_cdev_default = { 
+.release = cdev_default_release, }; 
+static struct kobj_type ktype_cdev_dynamic = { 
+.release = cdev_dynamic_release, }; 

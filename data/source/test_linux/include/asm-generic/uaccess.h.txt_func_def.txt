@@ -1,0 +1,3 @@
+static inline long strncpy_from_user(char *dst, const char __user *src, long count) 
+static inline long strnlen_user(const char __user *src, long n) 
+static inline __must_check unsigned long clear_user(void __user *to, unsigned long n) 

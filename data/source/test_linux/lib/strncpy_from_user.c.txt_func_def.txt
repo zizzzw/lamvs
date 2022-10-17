@@ -1,0 +1,2 @@
+static inline long do_strncpy_from_user(char *dst, const char __user *src, long count, unsigned long max) 
+long strncpy_from_user(char *dst, const char __user *src, long count) 

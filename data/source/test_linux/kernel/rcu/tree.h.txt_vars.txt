@@ -1,0 +1,3 @@
+extern struct list_head rcu_struct_flavors; 
+extern struct rcu_state rcu_sched_state; 
+extern struct rcu_state rcu_bh_state; 

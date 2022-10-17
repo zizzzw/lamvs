@@ -1,0 +1,3 @@
+unsigned int sysctl_nr_open __read_mostly = 1024*1024; 
+unsigned int sysctl_nr_open_min = BITS_PER_LONG; 
+unsigned int sysctl_nr_open_max = __const_min(INT_MAX, ~(size_t)0/sizeof(void *)) & -BITS_PER_LONG; 

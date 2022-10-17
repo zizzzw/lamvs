@@ -18,18 +18,18 @@ Data Base: mysql
 **-code:**  
 Java source code of LAMVS.
 
-**-examples:**  
+**-examples:**  【删掉？】
 
 C code of two examples(VFS and QiHang Kernel), tools extract design from here. 
 
 **-data:**  
 
 + -source  
-+ the source code of Linux Kernel and QiHang Kernel, IDLT work in this directory, it generate several .txt files for each .c file.  
+  + the source code of Linux Kernel and QiHang Kernel, IDLT work in this directory, it generate several .txt files for each .c file.  
 + -demand  
-+ Demands data extracted automatically by cflow.  
+  + Demands data extracted automatically by cflow.  
 + -db  
-+ All the data of lamvs in mysql database.    
+  + All the data of lamvs in mysql database.    
 
 **-tools:**  
 

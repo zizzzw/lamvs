@@ -1,0 +1,16 @@
+unsigned int sysctl_mount_max __read_mostly = 100000; 
+static unsigned int m_hash_mask __read_mostly; 
+static unsigned int m_hash_shift __read_mostly; 
+static unsigned int mp_hash_mask __read_mostly; 
+static unsigned int mp_hash_shift __read_mostly; 
+static __initdata unsigned long mhash_entries; 
+static __initdata unsigned long mphash_entries; 
+static u64 event; 
+static int mnt_id_start = 0; 
+static int mnt_group_start = 1; 
+static struct hlist_head *mount_hashtable __read_mostly; 
+static struct hlist_head *mountpoint_hashtable __read_mostly; 
+static struct kmem_cache *mnt_cache __read_mostly; 
+struct kobject *fs_kobj; 
+const struct proc_ns_operations mntns_operations = { 
+.name  = "mnt", .type  = CLONE_NEWNS, .get  = mntns_get, .put  = mntns_put, .install = mntns_install, .owner  = mntns_owner, }; 

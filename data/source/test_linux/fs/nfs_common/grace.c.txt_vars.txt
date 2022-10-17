@@ -1,0 +1,3 @@
+static unsigned int grace_net_id; 
+static struct pernet_operations grace_net_ops = { 
+.init = grace_init_net, .exit = grace_exit_net, .id   = &grace_net_id, .size = sizeof(struct list_head), }; 

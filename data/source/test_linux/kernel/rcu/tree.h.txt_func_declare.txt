@@ -1,0 +1,1 @@
+int rcu_dynticks_snap(struct rcu_dynticks *rdtp); 

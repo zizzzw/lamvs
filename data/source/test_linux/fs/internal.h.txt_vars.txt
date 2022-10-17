@@ -1,0 +1,2 @@
+extern const struct file_operations pipefifo_fops; 
+extern const struct dentry_operations ns_dentry_operations; 

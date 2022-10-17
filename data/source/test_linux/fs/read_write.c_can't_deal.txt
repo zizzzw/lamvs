@@ -1,0 +1,362 @@
+#ifdef CONFIG_COMPAT
+COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, compat_off_t, offset, unsigned int, whence)
+{
+	return ksys_lseek(fd, offset, whence);
+}
+#endif
+#ifdef __ARCH_WANT_SYS_LLSEEK
+SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+		unsigned long, offset_low, loff_t __user *, result,
+		unsigned int, whence)
+{
+	int retval;
+	struct fd f = fdget_pos(fd);
+	loff_t offset;
+
+	if (!f.file)
+		return -EBADF;
+
+	retval = -EINVAL;
+	if (whence > SEEK_MAX)
+		goto out_putf;
+
+	offset = vfs_llseek(f.file, ((loff_t) offset_high << 32) | offset_low,
+			whence);
+
+	retval = (int)offset;
+	if (offset >= 0) {
+		retval = -EFAULT;
+		if (!copy_to_user(result, &offset, sizeof(offset)))
+			retval = 0;
+	}
+out_putf:
+	fdput_pos(f);
+	return retval;
+}
+#endif
+#define vrfy_dir(type) ((type) == READ ? VERIFY_WRITE : VERIFY_READ)
+#ifdef CONFIG_COMPAT
+ssize_t compat_rw_copy_check_uvector(int type,
+		const struct compat_iovec __user *uvector, unsigned long nr_segs,
+		unsigned long fast_segs, struct iovec *fast_pointer,
+		struct iovec **ret_pointer)
+{
+	compat_ssize_t tot_len;
+	struct iovec *iov = *ret_pointer = fast_pointer;
+	ssize_t ret = 0;
+	int seg;
+
+	/*
+	 * SuS says "The readv() function *may* fail if the iovcnt argument
+	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
+	 * traditionally returned zero for zero segments, so...
+	 */
+	if (nr_segs == 0)
+		goto out;
+
+	ret = -EINVAL;
+	if (nr_segs > UIO_MAXIOV)
+		goto out;
+	if (nr_segs > fast_segs) {
+		ret = -ENOMEM;
+		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
+		if (iov == NULL)
+			goto out;
+	}
+	*ret_pointer = iov;
+
+	ret = -EFAULT;
+	if (!access_ok(VERIFY_READ, uvector, nr_segs*sizeof(*uvector)))
+		goto out;
+
+	/*
+	 * Single unix specification:
+	 * We should -EINVAL if an element length is not >= 0 and fitting an
+	 * ssize_t.
+	 *
+	 * In Linux, the total length is limited to MAX_RW_COUNT, there is
+	 * no overflow possibility.
+	 */
+	tot_len = 0;
+	ret = -EINVAL;
+	for (seg = 0; seg < nr_segs; seg++) {
+		compat_uptr_t buf;
+		compat_ssize_t len;
+
+		if (__get_user(len, &uvector->iov_len) ||
+		   __get_user(buf, &uvector->iov_base)) {
+			ret = -EFAULT;
+			goto out;
+		}
+		if (len < 0)	/* size_t not fitting in compat_ssize_t .. */
+			goto out;
+		if (type >= 0 &&
+		    !access_ok(vrfy_dir(type), compat_ptr(buf), len)) {
+			ret = -EFAULT;
+			goto out;
+		}
+		if (len > MAX_RW_COUNT - tot_len)
+			len = MAX_RW_COUNT - tot_len;
+		tot_len += len;
+		iov->iov_base = compat_ptr(buf);
+		iov->iov_len = (compat_size_t) len;
+		uvector++;
+		iov++;
+	}
+	ret = tot_len;
+
+out:
+	return ret;
+}
+#endif
+#ifdef CONFIG_COMPAT
+static size_t compat_readv(struct file *file,
+			   const struct compat_iovec __user *vec,
+			   unsigned long vlen, loff_t *pos, rwf_t flags)
+{
+	struct iovec iovstack[UIO_FASTIOV];
+	struct iovec *iov = iovstack;
+	struct iov_iter iter;
+	ssize_t ret;
+
+	ret = compat_import_iovec(READ, vec, vlen, UIO_FASTIOV, &iov, &iter);
+	if (ret >= 0) {
+		ret = do_iter_read(file, &iter, pos, flags);
+		kfree(iov);
+	}
+	if (ret > 0)
+		add_rchar(current, ret);
+	inc_syscr(current);
+	return ret;
+}
+
+static size_t do_compat_readv(compat_ulong_t fd,
+				 const struct compat_iovec __user *vec,
+				 compat_ulong_t vlen, rwf_t flags)
+{
+	struct fd f = fdget_pos(fd);
+	ssize_t ret;
+	loff_t pos;
+
+	if (!f.file)
+		return -EBADF;
+	pos = f.file->f_pos;
+	ret = compat_readv(f.file, vec, vlen, &pos, flags);
+	if (ret >= 0)
+		f.file->f_pos = pos;
+	fdput_pos(f);
+	return ret;
+
+}
+
+COMPAT_SYSCALL_DEFINE3(readv, compat_ulong_t, fd,
+		const struct compat_iovec __user *,vec,
+		compat_ulong_t, vlen)
+{
+	return do_compat_readv(fd, vec, vlen, 0);
+}
+
+static long do_compat_preadv64(unsigned long fd,
+				  const struct compat_iovec __user *vec,
+				  unsigned long vlen, loff_t pos, rwf_t flags)
+{
+	struct fd f;
+	ssize_t ret;
+
+	if (pos < 0)
+		return -EINVAL;
+	f = fdget(fd);
+	if (!f.file)
+		return -EBADF;
+	ret = -ESPIPE;
+	if (f.file->f_mode & FMODE_PREAD)
+		ret = compat_readv(f.file, vec, vlen, &pos, flags);
+	fdput(f);
+	return ret;
+}
+
+#ifdef __ARCH_WANT_COMPAT_SYS_PREADV64
+COMPAT_SYSCALL_DEFINE4(preadv64, unsigned long, fd,
+		const struct compat_iovec __user *,vec,
+		unsigned long, vlen, loff_t, pos)
+{
+	return do_compat_preadv64(fd, vec, vlen, pos, 0);
+}
+#endif
+
+COMPAT_SYSCALL_DEFINE5(preadv, compat_ulong_t, fd,
+		const struct compat_iovec __user *,vec,
+		compat_ulong_t, vlen, u32, pos_low, u32, pos_high)
+{
+	loff_t pos = ((loff_t)pos_high << 32) | pos_low;
+
+	return do_compat_preadv64(fd, vec, vlen, pos, 0);
+}
+
+#ifdef __ARCH_WANT_COMPAT_SYS_PREADV64V2
+COMPAT_SYSCALL_DEFINE5(preadv64v2, unsigned long, fd,
+		const struct compat_iovec __user *,vec,
+		unsigned long, vlen, loff_t, pos, rwf_t, flags)
+{
+	return do_compat_preadv64(fd, vec, vlen, pos, flags);
+}
+#endif
+
+COMPAT_SYSCALL_DEFINE6(preadv2, compat_ulong_t, fd,
+		const struct compat_iovec __user *,vec,
+		compat_ulong_t, vlen, u32, pos_low, u32, pos_high,
+		rwf_t, flags)
+{
+	loff_t pos = ((loff_t)pos_high << 32) | pos_low;
+
+	if (pos == -1)
+		return do_compat_readv(fd, vec, vlen, flags);
+
+	return do_compat_preadv64(fd, vec, vlen, pos, flags);
+}
+
+static size_t compat_writev(struct file *file,
+			    const struct compat_iovec __user *vec,
+			    unsigned long vlen, loff_t *pos, rwf_t flags)
+{
+	struct iovec iovstack[UIO_FASTIOV];
+	struct iovec *iov = iovstack;
+	struct iov_iter iter;
+	ssize_t ret;
+
+	ret = compat_import_iovec(WRITE, vec, vlen, UIO_FASTIOV, &iov, &iter);
+	if (ret >= 0) {
+		file_start_write(file);
+		ret = do_iter_write(file, &iter, pos, flags);
+		file_end_write(file);
+		kfree(iov);
+	}
+	if (ret > 0)
+		add_wchar(current, ret);
+	inc_syscw(current);
+	return ret;
+}
+
+static size_t do_compat_writev(compat_ulong_t fd,
+				  const struct compat_iovec __user* vec,
+				  compat_ulong_t vlen, rwf_t flags)
+{
+	struct fd f = fdget_pos(fd);
+	ssize_t ret;
+	loff_t pos;
+
+	if (!f.file)
+		return -EBADF;
+	pos = f.file->f_pos;
+	ret = compat_writev(f.file, vec, vlen, &pos, flags);
+	if (ret >= 0)
+		f.file->f_pos = pos;
+	fdput_pos(f);
+	return ret;
+}
+
+COMPAT_SYSCALL_DEFINE3(writev, compat_ulong_t, fd,
+		const struct compat_iovec __user *, vec,
+		compat_ulong_t, vlen)
+{
+	return do_compat_writev(fd, vec, vlen, 0);
+}
+
+static long do_compat_pwritev64(unsigned long fd,
+				   const struct compat_iovec __user *vec,
+				   unsigned long vlen, loff_t pos, rwf_t flags)
+{
+	struct fd f;
+	ssize_t ret;
+
+	if (pos < 0)
+		return -EINVAL;
+	f = fdget(fd);
+	if (!f.file)
+		return -EBADF;
+	ret = -ESPIPE;
+	if (f.file->f_mode & FMODE_PWRITE)
+		ret = compat_writev(f.file, vec, vlen, &pos, flags);
+	fdput(f);
+	return ret;
+}
+
+#ifdef __ARCH_WANT_COMPAT_SYS_PWRITEV64
+COMPAT_SYSCALL_DEFINE4(pwritev64, unsigned long, fd,
+		const struct compat_iovec __user *,vec,
+		unsigned long, vlen, loff_t, pos)
+{
+	return do_compat_pwritev64(fd, vec, vlen, pos, 0);
+}
+#endif
+
+COMPAT_SYSCALL_DEFINE5(pwritev, compat_ulong_t, fd,
+		const struct compat_iovec __user *,vec,
+		compat_ulong_t, vlen, u32, pos_low, u32, pos_high)
+{
+	loff_t pos = ((loff_t)pos_high << 32) | pos_low;
+
+	return do_compat_pwritev64(fd, vec, vlen, pos, 0);
+}
+
+#ifdef __ARCH_WANT_COMPAT_SYS_PWRITEV64V2
+COMPAT_SYSCALL_DEFINE5(pwritev64v2, unsigned long, fd,
+		const struct compat_iovec __user *,vec,
+		unsigned long, vlen, loff_t, pos, rwf_t, flags)
+{
+	return do_compat_pwritev64(fd, vec, vlen, pos, flags);
+}
+#endif
+
+COMPAT_SYSCALL_DEFINE6(pwritev2, compat_ulong_t, fd,
+		const struct compat_iovec __user *,vec,
+		compat_ulong_t, vlen, u32, pos_low, u32, pos_high, rwf_t, flags)
+{
+	loff_t pos = ((loff_t)pos_high << 32) | pos_low;
+
+	if (pos == -1)
+		return do_compat_writev(fd, vec, vlen, flags);
+
+	return do_compat_pwritev64(fd, vec, vlen, pos, flags);
+}
+
+#endif
+#ifdef CONFIG_COMPAT
+COMPAT_SYSCALL_DEFINE4(sendfile, int, out_fd, int, in_fd,
+		compat_off_t __user *, offset, compat_size_t, count)
+{
+	loff_t pos;
+	off_t off;
+	ssize_t ret;
+
+	if (offset) {
+		if (unlikely(get_user(off, offset)))
+			return -EFAULT;
+		pos = off;
+		ret = do_sendfile(out_fd, in_fd, &pos, count, MAX_NON_LFS);
+		if (unlikely(put_user(pos, offset)))
+			return -EFAULT;
+		return ret;
+	}
+
+	return do_sendfile(out_fd, in_fd, NULL, count, 0);
+}
+
+COMPAT_SYSCALL_DEFINE4(sendfile64, int, out_fd, int, in_fd,
+		compat_loff_t __user *, offset, compat_size_t, count)
+{
+	loff_t pos;
+	ssize_t ret;
+
+	if (offset) {
+		if (unlikely(copy_from_user(&pos, offset, sizeof(loff_t))))
+			return -EFAULT;
+		ret = do_sendfile(out_fd, in_fd, &pos, count, 0);
+		if (unlikely(put_user(pos, offset)))
+			return -EFAULT;
+		return ret;
+	}
+
+	return do_sendfile(out_fd, in_fd, NULL, count, 0);
+}
+#endif

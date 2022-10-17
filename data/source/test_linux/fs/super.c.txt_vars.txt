@@ -1,0 +1,3 @@
+static char *sb_writers_name[SB_FREEZE_LEVELS] = { 
+"sb_writers", "sb_pagefaults", "sb_internal", }; 
+static int unnamed_dev_start = 1; 

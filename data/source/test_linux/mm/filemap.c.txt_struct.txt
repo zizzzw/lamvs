@@ -1,0 +1,2 @@
+struct wait_page_key {struct page *page; int bit_nr; int page_match; };
+struct wait_page_queue {struct page *page; int bit_nr; wait_queue_entry_t wait; };

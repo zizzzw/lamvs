@@ -1,0 +1,73 @@
+include/linux/init.h
+include/linux/fs.h
+include/linux/kdev_t.h
+include/linux/slab.h
+include/linux/string.h
+include/linux/major.h
+include/linux/errno.h
+include/linux/module.h
+include/linux/seq_file.h
+include/linux/kobject.h
+include/linux/kobj_map.h
+include/linux/cdev.h
+include/linux/mutex.h
+include/linux/backing-dev.h
+include/linux/tty.h
+?/internal.h
+static struct kobj_map *cdev_map; 
+static DEFINE_MUTEX(chrdevs_lock); 
+static struct char_device_struct { 
+struct char_device_struct *next; 
+unsigned int major; 
+unsigned int baseminor; 
+int minorct; 
+char name[64]; 
+struct cdev *cdev; 
+} *chrdevs[CHRDEV_MAJOR_HASH_SIZE]; 
+static inline int major_to_index(unsigned major) 
+static int find_dynamic_major(void) 
+static struct char_device_struct * __register_chrdev_region(unsigned int major, unsigned int baseminor, int minorct, const char *name) 
+static struct char_device_struct * __unregister_chrdev_region(unsigned major, unsigned baseminor, int minorct) 
+int register_chrdev_region(dev_t from, unsigned count, const char *name) 
+int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count, const char *name) 
+int __register_chrdev(unsigned int major, unsigned int baseminor, unsigned int count, const char *name, const struct file_operations *fops) 
+void unregister_chrdev_region(dev_t from, unsigned count) 
+void __unregister_chrdev(unsigned int major, unsigned int baseminor, unsigned int count, const char *name) 
+static DEFINE_SPINLOCK(cdev_lock); 
+static struct kobject *cdev_get(struct cdev *p) 
+void cdev_put(struct cdev *p) 
+static int chrdev_open(struct inode *inode, struct file *filp) 
+void cd_forget(struct inode *inode) 
+static void cdev_purge(struct cdev *cdev) 
+const struct file_operations def_chr_fops = { 
+.open = chrdev_open, .llseek = noop_llseek, }; 
+static struct kobject *exact_match(dev_t dev, int *part, void *data) 
+static int exact_lock(dev_t dev, void *data) 
+int cdev_add(struct cdev *p, dev_t dev, unsigned count) 
+void cdev_set_parent(struct cdev *p, struct kobject *kobj) 
+int cdev_device_add(struct cdev *cdev, struct device *dev) 
+void cdev_device_del(struct cdev *cdev, struct device *dev) 
+static void cdev_unmap(dev_t dev, unsigned count) 
+void cdev_del(struct cdev *p) 
+static void cdev_default_release(struct kobject *kobj) 
+static void cdev_dynamic_release(struct kobject *kobj) 
+static struct kobj_type ktype_cdev_default = { 
+.release	= cdev_default_release, }; 
+static struct kobj_type ktype_cdev_dynamic = { 
+.release	= cdev_dynamic_release, }; 
+struct cdev *cdev_alloc(void) 
+void cdev_init(struct cdev *cdev, const struct file_operations *fops) 
+static struct kobject *base_probe(dev_t dev, int *part, void *data) 
+void __init chrdev_init(void) 
+EXPORT_SYMBOL(register_chrdev_region); 
+EXPORT_SYMBOL(unregister_chrdev_region); 
+EXPORT_SYMBOL(alloc_chrdev_region); 
+EXPORT_SYMBOL(cdev_init); 
+EXPORT_SYMBOL(cdev_alloc); 
+EXPORT_SYMBOL(cdev_del); 
+EXPORT_SYMBOL(cdev_add); 
+EXPORT_SYMBOL(cdev_set_parent); 
+EXPORT_SYMBOL(cdev_device_add); 
+EXPORT_SYMBOL(cdev_device_del); 
+EXPORT_SYMBOL(__register_chrdev); 
+EXPORT_SYMBOL(__unregister_chrdev); 

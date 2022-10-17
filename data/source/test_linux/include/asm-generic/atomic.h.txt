@@ -1,0 +1,9 @@
+include/asm/cmpxchg.h
+include/asm/barrier.h
+#undef ATOMIC_FETCH_OP #undef ATOMIC_OP_RETURN #undef ATOMIC_OP include/linux/irqflags.h
+static inline int atomic_add_negative(int i, atomic_t *v) 
+static inline void atomic_add(int i, atomic_t *v) 
+static inline void atomic_sub(int i, atomic_t *v) 
+static inline void atomic_inc(atomic_t *v) 
+static inline void atomic_dec(atomic_t *v) 
+#endif 

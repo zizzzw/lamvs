@@ -1,0 +1,2 @@
+extern int __put_user_bad(void) __attribute__((noreturn)); 
+extern int __get_user_bad(void) __attribute__((noreturn)); 

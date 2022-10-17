@@ -1,0 +1,8 @@
+EXPORT_SYMBOL(get_unused_fd_flags); 
+EXPORT_SYMBOL(put_unused_fd); 
+EXPORT_SYMBOL(fd_install); 
+EXPORT_SYMBOL(__close_fd); 
+EXPORT_SYMBOL(fget); 
+EXPORT_SYMBOL(fget_raw); 
+EXPORT_SYMBOL(__fdget); 
+EXPORT_SYMBOL(iterate_fd); 

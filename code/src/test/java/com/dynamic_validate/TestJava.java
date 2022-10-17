@@ -3,12 +3,19 @@ package com.dynamic_validate;
 import com.dynamic_validate.data.Data;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestJava {
+    @Test
+    public void testPath(){
+        String rootPath = System.getProperty("user.dir");
+        String dir = new File(rootPath).getParent() + "\\";
+        System.out.println(dir);
+    }
 
     @Test
     public void testList() {

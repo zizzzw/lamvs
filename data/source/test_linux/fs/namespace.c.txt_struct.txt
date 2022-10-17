@@ -1,0 +1,1 @@
+enum umount_tree_flags {UMOUNT_SYNC = 1,UMOUNT_PROPAGATE = 2,UMOUNT_CONNECTED = 4,};

@@ -1,0 +1,11 @@
+#define BH_ENTRY(list) list_entry((list), struct buffer_head, b_assoc_buffers)
+#define BH_LRU_SIZE	16
+#ifdef CONFIG_SMP
+#define bh_lru_lock()	local_irq_disable()
+#define bh_lru_unlock()	local_irq_enable()
+#else
+#define bh_lru_lock()	preempt_disable()
+#define bh_lru_unlock()	preempt_enable()
+#endif
+	(1 << BH_Mapped | 1 << BH_New | 1 << BH_Req | \
+	 1 << BH_Delay | 1 << BH_Unwritten)

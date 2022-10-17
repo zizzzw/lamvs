@@ -1,0 +1,4 @@
+void kfree(const void *); 
+void rcu_early_boot_tests(void); 
+void rcu_test_sync_prims(void); 
+extern void resched_cpu(int cpu); 

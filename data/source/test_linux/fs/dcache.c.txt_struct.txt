@@ -1,0 +1,5 @@
+struct dentry_stat_t dentry_stat = {.age_limit = 45,};
+struct external_name {union { atomic_t count; struct rcu_head head; };unsigned char name[]; };
+enum d_walk_ret {D_WALK_CONTINUE,D_WALK_QUIT,D_WALK_NORETRY,D_WALK_SKIP,};
+struct check_mount {struct vfsmount *mnt; unsigned int mounted; };
+struct select_data {struct dentry *start; struct list_head dispose; int found; };

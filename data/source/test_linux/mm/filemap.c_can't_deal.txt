@@ -1,0 +1,441 @@
+#define CREATE_TRACE_POINTS
+#ifdef CONFIG_NUMA
+struct page *__page_cache_alloc(gfp_t gfp)
+{
+	int n;
+	struct page *page;
+
+	if (cpuset_do_page_mem_spread()) {
+		unsigned int cpuset_mems_cookie;
+		do {
+			cpuset_mems_cookie = read_mems_allowed_begin();
+			n = cpuset_mem_spread_node();
+			page = __alloc_pages_node(n, gfp, 0);
+		} while (!page && read_mems_allowed_retry(cpuset_mems_cookie));
+
+		return page;
+	}
+	return alloc_pages(gfp, 0);
+}
+EXPORT_SYMBOL(__page_cache_alloc);
+#endif
+#define PAGE_WAIT_TABLE_BITS 8
+#define PAGE_WAIT_TABLE_SIZE (1 << PAGE_WAIT_TABLE_BITS)
+#ifndef clear_bit_unlock_is_negative_byte
+
+/*
+ * PG_waiters is the high bit in the same byte as PG_lock.
+ *
+ * On x86 (and on many other architectures), we can clear PG_lock and
+ * test the sign bit at the same time. But if the architecture does
+ * not support that special operation, we just do this all by hand
+ * instead.
+ *
+ * The read of PG_waiters has to be after (or concurrently with) PG_locked
+ * being cleared, but a memory barrier should be unneccssary since it is
+ * in the same byte as PG_locked.
+ */
+static inline bool clear_bit_unlock_is_negative_byte(long nr, volatile void *mem)
+{
+	clear_bit_unlock(nr, mem);
+	/* smp_mb__after_atomic(); */
+	return test_bit(PG_waiters, mem);
+}
+
+#endif
+#ifdef CONFIG_MMU
+/**
+ * page_cache_read - adds requested page to the page cache if not already there
+ * @file:	file to read
+ * @offset:	page index
+ * @gfp_mask:	memory allocation flags
+ *
+ * This adds the requested page to the page cache if it isn't already there,
+ * and schedules an I/O to read in its contents from disk.
+ */
+static int page_cache_read(struct file *file, pgoff_t offset, gfp_t gfp_mask)
+{
+	struct address_space *mapping = file->f_mapping;
+	struct page *page;
+	int ret;
+
+	do {
+		page = __page_cache_alloc(gfp_mask);
+		if (!page)
+			return -ENOMEM;
+
+		ret = add_to_page_cache_lru(page, mapping, offset, gfp_mask);
+		if (ret == 0)
+			ret = mapping->a_ops->readpage(file, page);
+		else if (ret == -EEXIST)
+			ret = 0; /* losing race to add is OK */
+
+		put_page(page);
+
+	} while (ret == AOP_TRUNCATED_PAGE);
+
+	return ret;
+}
+
+#define MMAP_LOTSAMISS  (100)
+
+/*
+ * Synchronous readahead happens when we don't even find
+ * a page in the page cache at all.
+ */
+static void do_sync_mmap_readahead(struct vm_area_struct *vma,
+				   struct file_ra_state *ra,
+				   struct file *file,
+				   pgoff_t offset)
+{
+	struct address_space *mapping = file->f_mapping;
+
+	/* If we don't want any read-ahead, don't bother */
+	if (vma->vm_flags & VM_RAND_READ)
+		return;
+	if (!ra->ra_pages)
+		return;
+
+	if (vma->vm_flags & VM_SEQ_READ) {
+		page_cache_sync_readahead(mapping, ra, file, offset,
+					  ra->ra_pages);
+		return;
+	}
+
+	/* Avoid banging the cache line if not needed */
+	if (ra->mmap_miss < MMAP_LOTSAMISS * 10)
+		ra->mmap_miss++;
+
+	/*
+	 * Do we miss much more than hit in this file? If so,
+	 * stop bothering with read-ahead. It will only hurt.
+	 */
+	if (ra->mmap_miss > MMAP_LOTSAMISS)
+		return;
+
+	/*
+	 * mmap read-around
+	 */
+	ra->start = max_t(long, 0, offset - ra->ra_pages / 2);
+	ra->size = ra->ra_pages;
+	ra->async_size = ra->ra_pages / 4;
+	ra_submit(ra, mapping, file);
+}
+
+/*
+ * Asynchronous readahead happens when we find the page and PG_readahead,
+ * so we want to possibly extend the readahead further..
+ */
+static void do_async_mmap_readahead(struct vm_area_struct *vma,
+				    struct file_ra_state *ra,
+				    struct file *file,
+				    struct page *page,
+				    pgoff_t offset)
+{
+	struct address_space *mapping = file->f_mapping;
+
+	/* If we don't want any read-ahead, don't bother */
+	if (vma->vm_flags & VM_RAND_READ)
+		return;
+	if (ra->mmap_miss > 0)
+		ra->mmap_miss--;
+	if (PageReadahead(page))
+		page_cache_async_readahead(mapping, ra, file,
+					   page, offset, ra->ra_pages);
+}
+
+/**
+ * filemap_fault - read in file data for page fault handling
+ * @vmf:	struct vm_fault containing details of the fault
+ *
+ * filemap_fault() is invoked via the vma operations vector for a
+ * mapped memory region to read in file data during a page fault.
+ *
+ * The goto's are kind of ugly, but this streamlines the normal case of having
+ * it in the page cache, and handles the special cases reasonably without
+ * having a lot of duplicated code.
+ *
+ * vma->vm_mm->mmap_sem must be held on entry.
+ *
+ * If our return value has VM_FAULT_RETRY set, it's because
+ * lock_page_or_retry() returned 0.
+ * The mmap_sem has usually been released in this case.
+ * See __lock_page_or_retry() for the exception.
+ *
+ * If our return value does not have VM_FAULT_RETRY set, the mmap_sem
+ * has not been released.
+ *
+ * We never return with VM_FAULT_RETRY and a bit from VM_FAULT_ERROR set.
+ */
+vm_fault_t filemap_fault(struct vm_fault *vmf)
+{
+	int error;
+	struct file *file = vmf->vma->vm_file;
+	struct address_space *mapping = file->f_mapping;
+	struct file_ra_state *ra = &file->f_ra;
+	struct inode *inode = mapping->host;
+	pgoff_t offset = vmf->pgoff;
+	pgoff_t max_off;
+	struct page *page;
+	vm_fault_t ret = 0;
+
+	max_off = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
+	if (unlikely(offset >= max_off))
+		return VM_FAULT_SIGBUS;
+
+	/*
+	 * Do we have something in the page cache already?
+	 */
+	page = find_get_page(mapping, offset);
+	if (likely(page) && !(vmf->flags & FAULT_FLAG_TRIED)) {
+		/*
+		 * We found the page, so try async readahead before
+		 * waiting for the lock.
+		 */
+		do_async_mmap_readahead(vmf->vma, ra, file, page, offset);
+	} else if (!page) {
+		/* No page in the page cache at all */
+		do_sync_mmap_readahead(vmf->vma, ra, file, offset);
+		count_vm_event(PGMAJFAULT);
+		count_memcg_event_mm(vmf->vma->vm_mm, PGMAJFAULT);
+		ret = VM_FAULT_MAJOR;
+retry_find:
+		page = find_get_page(mapping, offset);
+		if (!page)
+			goto no_cached_page;
+	}
+
+	if (!lock_page_or_retry(page, vmf->vma->vm_mm, vmf->flags)) {
+		put_page(page);
+		return ret | VM_FAULT_RETRY;
+	}
+
+	/* Did it get truncated? */
+	if (unlikely(page->mapping != mapping)) {
+		unlock_page(page);
+		put_page(page);
+		goto retry_find;
+	}
+	VM_BUG_ON_PAGE(page->index != offset, page);
+
+	/*
+	 * We have a locked page in the page cache, now we need to check
+	 * that it's up-to-date. If not, it is going to be due to an error.
+	 */
+	if (unlikely(!PageUptodate(page)))
+		goto page_not_uptodate;
+
+	/*
+	 * Found the page and have a reference on it.
+	 * We must recheck i_size under page lock.
+	 */
+	max_off = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
+	if (unlikely(offset >= max_off)) {
+		unlock_page(page);
+		put_page(page);
+		return VM_FAULT_SIGBUS;
+	}
+
+	vmf->page = page;
+	return ret | VM_FAULT_LOCKED;
+
+no_cached_page:
+	/*
+	 * We're only likely to ever get here if MADV_RANDOM is in
+	 * effect.
+	 */
+	error = page_cache_read(file, offset, vmf->gfp_mask);
+
+	/*
+	 * The page we want has now been added to the page cache.
+	 * In the unlikely event that someone removed it in the
+	 * meantime, we'll just come back here and read it again.
+	 */
+	if (error >= 0)
+		goto retry_find;
+
+	/*
+	 * An error return from page_cache_read can result if the
+	 * system is low on memory, or a problem occurs while trying
+	 * to schedule I/O.
+	 */
+	if (error == -ENOMEM)
+		return VM_FAULT_OOM;
+	return VM_FAULT_SIGBUS;
+
+page_not_uptodate:
+	/*
+	 * Umm, take care of errors if the page isn't up-to-date.
+	 * Try to re-read it _once_. We do this synchronously,
+	 * because there really aren't any performance issues here
+	 * and we need to check for errors.
+	 */
+	ClearPageError(page);
+	error = mapping->a_ops->readpage(file, page);
+	if (!error) {
+		wait_on_page_locked(page);
+		if (!PageUptodate(page))
+			error = -EIO;
+	}
+	put_page(page);
+
+	if (!error || error == AOP_TRUNCATED_PAGE)
+		goto retry_find;
+
+	/* Things didn't work out. Return zero to tell the mm layer so. */
+	shrink_readahead_size_eio(file, ra);
+	return VM_FAULT_SIGBUS;
+}
+EXPORT_SYMBOL(filemap_fault);
+
+void filemap_map_pages(struct vm_fault *vmf,
+		pgoff_t start_pgoff, pgoff_t end_pgoff)
+{
+	struct radix_tree_iter iter;
+	void **slot;
+	struct file *file = vmf->vma->vm_file;
+	struct address_space *mapping = file->f_mapping;
+	pgoff_t last_pgoff = start_pgoff;
+	unsigned long max_idx;
+	struct page *head, *page;
+
+	rcu_read_lock();
+	radix_tree_for_each_slot(slot, &mapping->i_pages, &iter, start_pgoff) {
+		if (iter.index > end_pgoff)
+			break;
+repeat:
+		page = radix_tree_deref_slot(slot);
+		if (unlikely(!page))
+			goto next;
+		if (radix_tree_exception(page)) {
+			if (radix_tree_deref_retry(page)) {
+				slot = radix_tree_iter_retry(&iter);
+				continue;
+			}
+			goto next;
+		}
+
+		head = compound_head(page);
+		if (!page_cache_get_speculative(head))
+			goto repeat;
+
+		/* The page was split under us? */
+		if (compound_head(page) != head) {
+			put_page(head);
+			goto repeat;
+		}
+
+		/* Has the page moved? */
+		if (unlikely(page != *slot)) {
+			put_page(head);
+			goto repeat;
+		}
+
+		if (!PageUptodate(page) ||
+				PageReadahead(page) ||
+				PageHWPoison(page))
+			goto skip;
+		if (!trylock_page(page))
+			goto skip;
+
+		if (page->mapping != mapping || !PageUptodate(page))
+			goto unlock;
+
+		max_idx = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
+		if (page->index >= max_idx)
+			goto unlock;
+
+		if (file->f_ra.mmap_miss > 0)
+			file->f_ra.mmap_miss--;
+
+		vmf->address += (iter.index - last_pgoff) << PAGE_SHIFT;
+		if (vmf->pte)
+			vmf->pte += iter.index - last_pgoff;
+		last_pgoff = iter.index;
+		if (alloc_set_pte(vmf, NULL, page))
+			goto unlock;
+		unlock_page(page);
+		goto next;
+unlock:
+		unlock_page(page);
+skip:
+		put_page(page);
+next:
+		/* Huge page is mapped? No need to proceed. */
+		if (pmd_trans_huge(*vmf->pmd))
+			break;
+		if (iter.index == end_pgoff)
+			break;
+	}
+	rcu_read_unlock();
+}
+EXPORT_SYMBOL(filemap_map_pages);
+
+vm_fault_t filemap_page_mkwrite(struct vm_fault *vmf)
+{
+	struct page *page = vmf->page;
+	struct inode *inode = file_inode(vmf->vma->vm_file);
+	vm_fault_t ret = VM_FAULT_LOCKED;
+
+	sb_start_pagefault(inode->i_sb);
+	file_update_time(vmf->vma->vm_file);
+	lock_page(page);
+	if (page->mapping != inode->i_mapping) {
+		unlock_page(page);
+		ret = VM_FAULT_NOPAGE;
+		goto out;
+	}
+	/*
+	 * We mark the page dirty already here so that when freeze is in
+	 * progress, we are guaranteed that writeback during freezing will
+	 * see the dirty page and writeprotect it again.
+	 */
+	set_page_dirty(page);
+	wait_for_stable_page(page);
+out:
+	sb_end_pagefault(inode->i_sb);
+	return ret;
+}
+
+const struct vm_operations_struct generic_file_vm_ops = {
+	.fault		= filemap_fault,
+	.map_pages	= filemap_map_pages,
+	.page_mkwrite	= filemap_page_mkwrite,
+};
+
+/* This is used for a general mmap of a disk file */
+
+int generic_file_mmap(struct file * file, struct vm_area_struct * vma)
+{
+	struct address_space *mapping = file->f_mapping;
+
+	if (!mapping->a_ops->readpage)
+		return -ENOEXEC;
+	file_accessed(file);
+	vma->vm_ops = &generic_file_vm_ops;
+	return 0;
+}
+
+/*
+ * This is for filesystems which do not implement ->writepage.
+ */
+int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+{
+	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
+		return -EINVAL;
+	return generic_file_mmap(file, vma);
+}
+#else
+int filemap_page_mkwrite(struct vm_fault *vmf)
+{
+	return -ENOSYS;
+}
+int generic_file_mmap(struct file * file, struct vm_area_struct * vma)
+{
+	return -ENOSYS;
+}
+int generic_file_readonly_mmap(struct file * file, struct vm_area_struct * vma)
+{
+	return -ENOSYS;
+}
+#endif /* CONFIG_MMU */

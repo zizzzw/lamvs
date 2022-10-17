@@ -1,0 +1,5 @@
+static DEFINE_PER_CPU(struct bh_lru, bh_lrus) = {{ NULL }}; 
+static struct kmem_cache *bh_cachep __read_mostly; 
+static unsigned long max_buffer_heads; 
+int buffer_heads_over_limit; 
+static DEFINE_PER_CPU(struct bh_accounting, bh_accounting) = {0, 0}; 
