@@ -172,15 +172,15 @@ public class Data {
 
     public static final String demandExcel = "G:/研究生/毕设/我的毕设/系统实现/checkSys数据/6-导入数据（同数据库格式和id）/saml_demand.xlsx";
     //public static final String demandDentry = "G:\\研究生\\毕设\\我的毕设\\系统实现\\checkSys数据\\8-最新数据\\待处理txt调用";// 需求txt文件所在目录
-    //public static final String demands = "G:\\研究生\\毕设\\我的毕设\\0小论文\\王梓资料\\数据\\";
+    //public static final String demand = "G:\\研究生\\毕设\\我的毕设\\0小论文\\王梓资料\\数据\\";
     public static String rootPath = System.getProperty("user.dir");
     public static String rootPathParent = new File(rootPath).getParent() + "\\";
-    public static final String demands = rootPathParent + "data\\demand\\";
+    public static final String demand = rootPathParent + "data\\demand\\";
 
-    public static final String d_vfs = demands + "d_vfs";// 需求txt文件所在目录
-    public static final String d_guest = demands + "d_guest";// 需求txt文件所在目录
-    public static final String d_host = demands + "d_host";// 需求txt文件所在目录
-    public static final String fs_pguestfs = demands + "fs-pguestfs";// 需求txt文件所在目录
+    public static final String d_vfs = demand + "d_vfs";// 需求txt文件所在目录
+    public static final String d_guest = demand + "d_guest";// 需求txt文件所在目录
+    public static final String d_host = demand + "d_host";// 需求txt文件所在目录
+    public static final String fs_pguestfs = demand + "fs-pguestfs";// 需求txt文件所在目录
     public static final String source = rootPathParent + "data\\source\\";// 需求txt文件所在目录
     public static final String source_linux = source + "linux";// 需求txt文件所在目录
     public static final String source_guest = source + "guest_small";// 需求txt文件所在目录

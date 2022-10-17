@@ -633,9 +633,9 @@ public class RuleServiceImp implements RuleService {
     //@Deprecated
     //public void DEV_IR_ByRule(List<ErrorClassify> errList) {
     //    //函数无效就不考虑了，因为那是类型检测的任务。
-    //    List<DemandInvoke> demands = demandInvokeDao.findByRelationClassifyAndValid(Data.Invocable, Data.Valid);
+    //    List<DemandInvoke> demand = demandInvokeDao.findByRelationClassifyAndValid(Data.Invocable, Data.Valid);
     //
-    //    for (DemandInvoke cur : demands) {
+    //    for (DemandInvoke cur : demand) {
     //        System.out.println("----------开始：检测调用关系：" + cur.getExp() + "----------");
     //        if (distributeTR(cur)) {
     //            System.out.println("结果：" + cur.getExp() + "可调用");
