@@ -5,7 +5,7 @@ import com.dynamic_validate.dao.DemandPathDao;
 import com.dynamic_validate.dao.SamlTypeDao;
 import com.dynamic_validate.entity.SamlType;
 import com.dynamic_validate.service.*;
-import com.example.dynamic_validate.service.*;
+import com.dynamic_validate.service.*;
 import com.dynamic_validate.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

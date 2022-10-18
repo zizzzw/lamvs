@@ -1,0 +1,3 @@
+static const __poll_t band_table[NSIGPOLL] = { 
+EPOLLIN | EPOLLRDNORM, EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND, EPOLLIN | EPOLLRDNORM | EPOLLMSG, EPOLLERR, EPOLLPRI | EPOLLRDBAND, EPOLLHUP | EPOLLERR }; 
+static struct kmem_cache *fasync_cache __read_mostly; 

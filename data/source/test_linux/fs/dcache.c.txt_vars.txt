@@ -1,0 +1,7 @@
+int sysctl_vfs_cache_pressure __read_mostly = 100; 
+static struct kmem_cache *dentry_cache __read_mostly; 
+static unsigned int d_hash_shift __read_mostly; 
+static struct hlist_bl_head *dentry_hashtable __read_mostly; 
+static struct hlist_bl_head in_lookup_hashtable[1 << IN_LOOKUP_SHIFT]; 
+static __initdata unsigned long dhash_entries; 
+struct kmem_cache *names_cachep __read_mostly; 

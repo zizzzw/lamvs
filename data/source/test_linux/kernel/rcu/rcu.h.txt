@@ -1,0 +1,18 @@
+include/trace/events/rcu.h
+static inline unsigned long rcu_seq_ctr(unsigned long s) 
+static inline int rcu_seq_state(unsigned long s) 
+static inline void rcu_seq_set_state(unsigned long *sp, int newstate) 
+static inline void rcu_seq_start(unsigned long *sp) 
+static inline unsigned long rcu_seq_endval(unsigned long *sp) 
+static inline void rcu_seq_end(unsigned long *sp) 
+static inline unsigned long rcu_seq_snap(unsigned long *sp) 
+static inline unsigned long rcu_seq_current(unsigned long *sp) 
+static inline bool rcu_seq_done(unsigned long *sp, unsigned long s) 
+void kfree(const void *); 
+static inline bool __rcu_reclaim(const char *rn, struct rcu_head *head) 
+void rcu_early_boot_tests(void); 
+void rcu_test_sync_prims(void); 
+extern void resched_cpu(int cpu); 
+enum rcutorture_type {
+RCU_FLAVOR,RCU_BH_FLAVOR,RCU_SCHED_FLAVOR,RCU_TASKS_FLAVOR,SRCU_FLAVOR,INVALID_RCU_FLAVOR};
+#endif 

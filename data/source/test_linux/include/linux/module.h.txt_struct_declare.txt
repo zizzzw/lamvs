@@ -1,0 +1,3 @@
+struct module; 
+struct exception_table_entry; 
+struct notifier_block; 

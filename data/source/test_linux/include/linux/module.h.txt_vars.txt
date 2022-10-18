@@ -1,0 +1,1 @@
+extern struct module_attribute module_uevent; 

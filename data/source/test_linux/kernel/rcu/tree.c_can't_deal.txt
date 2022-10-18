@@ -1,0 +1,203 @@
+#ifdef MODULE_PARAM_PREFIX
+#undef MODULE_PARAM_PREFIX
+#endif
+#define MODULE_PARAM_PREFIX "rcutree."
+#ifdef CONFIG_TRACING
+# define DEFINE_RCU_TPS(sname) \
+static char sname##_varname[] = #sname; \
+static const char *tp_##sname##_varname __used __tracepoint_string = sname##_varname;
+# define RCU_STATE_NAME(sname) sname##_varname
+#else
+# define DEFINE_RCU_TPS(sname)
+# define RCU_STATE_NAME(sname) __stringify(sname)
+#endif
+DEFINE_RCU_TPS(sname) \
+static DEFINE_PER_CPU_SHARED_ALIGNED(struct rcu_data, sname##_data); \
+struct rcu_state sname##_state = { \
+	.level = { &sname##_state.node[0] }, \
+	.rda = &sname##_data, \
+	.call = cr, \
+	.gp_state = RCU_GP_IDLE, \
+	.gpnum = 0UL - 300UL, \
+	.completed = 0UL - 300UL, \
+	.barrier_mutex = __MUTEX_INITIALIZER(sname##_state.barrier_mutex), \
+	.name = RCU_STATE_NAME(sname), \
+	.abbr = sabbr, \
+	.exp_mutex = __MUTEX_INITIALIZER(sname##_state.exp_mutex), \
+	.exp_wake_mutex = __MUTEX_INITIALIZER(sname##_state.exp_wake_mutex), \
+}
+#define PER_RCU_NODE_PERIOD 3	/* Number of grace periods between delays. */
+#define RCU_DYNTICK_CTRL_MASK 0x1
+#define RCU_DYNTICK_CTRL_CTR  (RCU_DYNTICK_CTRL_MASK + 1)
+#ifndef rcu_eqs_special_exit
+#define rcu_eqs_special_exit() do { } while (0)
+#endif
+#define DEFAULT_RCU_BLIMIT 10     /* Maximum callbacks per rcu_do_batch. */
+#define DEFAULT_RCU_QHIMARK 10000 /* If this many pending, ignore blimit. */
+#define DEFAULT_RCU_QLOMARK 100   /* Once only this many pending, use blimit. */
+#ifdef CONFIG_NO_HZ_FULL
+/**
+ * rcu_user_enter - inform RCU that we are resuming userspace.
+ *
+ * Enter RCU idle mode right before resuming userspace.  No use of RCU
+ * is permitted between this call and rcu_user_exit(). This way the
+ * CPU doesn't need to maintain the tick for RCU maintenance purposes
+ * when the CPU runs in userspace.
+ *
+ * If you add or remove a call to rcu_user_enter(), be sure to test with
+ * CONFIG_RCU_EQS_DEBUG=y.
+ */
+void rcu_user_enter(void)
+{
+	lockdep_assert_irqs_disabled();
+	rcu_eqs_enter(true);
+}
+#endif /* CONFIG_NO_HZ_FULL */
+#ifdef CONFIG_NO_HZ_FULL
+/**
+ * rcu_user_exit - inform RCU that we are exiting userspace.
+ *
+ * Exit RCU idle mode while entering the kernel because it can
+ * run a RCU read side critical section anytime.
+ *
+ * If you add or remove a call to rcu_user_exit(), be sure to test with
+ * CONFIG_RCU_EQS_DEBUG=y.
+ */
+void rcu_user_exit(void)
+{
+	rcu_eqs_exit(1);
+}
+#endif /* CONFIG_NO_HZ_FULL */
+#if defined(CONFIG_PROVE_RCU) && defined(CONFIG_HOTPLUG_CPU)
+
+/*
+ * Is the current CPU online?  Disable preemption to avoid false positives
+ * that could otherwise happen due to the current CPU number being sampled,
+ * this task being preempted, its old CPU being taken offline, resuming
+ * on some other CPU, then determining that its old CPU is now offline.
+ * It is OK to use RCU on an offline processor during initial boot, hence
+ * the check for rcu_scheduler_fully_active.  Note also that it is OK
+ * for a CPU coming online to use RCU for one jiffy prior to marking itself
+ * online in the cpu_online_mask.  Similarly, it is OK for a CPU going
+ * offline to continue to use RCU for one jiffy after marking itself
+ * offline in the cpu_online_mask.  This leniency is necessary given the
+ * non-atomic nature of the online and offline processing, for example,
+ * the fact that a CPU enters the scheduler after completing the teardown
+ * of the CPU.
+ *
+ * This is also why RCU internally marks CPUs online during in the
+ * preparation phase and offline after the CPU has been taken down.
+ *
+ * Disable checking if in an NMI handler because we cannot safely report
+ * errors from NMI handlers anyway.
+ */
+bool rcu_lockdep_current_cpu_online(void)
+{
+	struct rcu_data *rdp;
+	struct rcu_node *rnp;
+	bool ret;
+
+	if (in_nmi())
+		return true;
+	preempt_disable();
+	rdp = this_cpu_ptr(&rcu_sched_data);
+	rnp = rdp->mynode;
+	ret = (rdp->grpmask & rcu_rnp_online_cpus(rnp)) ||
+	      !rcu_scheduler_fully_active;
+	preempt_enable();
+	return ret;
+}
+EXPORT_SYMBOL_GPL(rcu_lockdep_current_cpu_online);
+
+#endif /* #if defined(CONFIG_PROVE_RCU) && defined(CONFIG_HOTPLUG_CPU) */
+#ifdef CONFIG_HOTPLUG_CPU
+/*
+ * The CPU is exiting the idle loop into the arch_cpu_idle_dead()
+ * function.  We now remove it from the rcu_node tree's ->qsmaskinit
+ * bit masks.
+ */
+static void rcu_cleanup_dying_idle_cpu(int cpu, struct rcu_state *rsp)
+{
+	unsigned long flags;
+	unsigned long mask;
+	struct rcu_data *rdp = per_cpu_ptr(rsp->rda, cpu);
+	struct rcu_node *rnp = rdp->mynode;  /* Outgoing CPU's rdp & rnp. */
+
+	/* Remove outgoing CPU from mask in the leaf rcu_node structure. */
+	mask = rdp->grpmask;
+	raw_spin_lock_irqsave_rcu_node(rnp, flags); /* Enforce GP memory-order guarantee. */
+	rnp->qsmaskinitnext &= ~mask;
+	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+}
+
+/*
+ * The outgoing function has no further need of RCU, so remove it from
+ * the list of CPUs that RCU must track.
+ *
+ * Note that this function is special in that it is invoked directly
+ * from the outgoing CPU rather than from the cpuhp_step mechanism.
+ * This is because this function must be invoked at a precise location.
+ */
+void rcu_report_dead(unsigned int cpu)
+{
+	struct rcu_state *rsp;
+
+	/* QS for any half-done expedited RCU-sched GP. */
+	preempt_disable();
+	rcu_report_exp_rdp(&rcu_sched_state,
+			   this_cpu_ptr(rcu_sched_state.rda), true);
+	preempt_enable();
+	for_each_rcu_flavor(rsp)
+		rcu_cleanup_dying_idle_cpu(cpu, rsp);
+
+	per_cpu(rcu_cpu_started, cpu) = 0;
+}
+
+/* Migrate the dead CPU's callbacks to the current CPU. */
+static void rcu_migrate_callbacks(int cpu, struct rcu_state *rsp)
+{
+	unsigned long flags;
+	struct rcu_data *my_rdp;
+	struct rcu_data *rdp = per_cpu_ptr(rsp->rda, cpu);
+	struct rcu_node *rnp_root = rcu_get_root(rdp->rsp);
+	bool needwake;
+
+	if (rcu_is_nocb_cpu(cpu) || rcu_segcblist_empty(&rdp->cblist))
+		return;  /* No callbacks to migrate. */
+
+	local_irq_save(flags);
+	my_rdp = this_cpu_ptr(rsp->rda);
+	if (rcu_nocb_adopt_orphan_cbs(my_rdp, rdp, flags)) {
+		local_irq_restore(flags);
+		return;
+	}
+	raw_spin_lock_rcu_node(rnp_root); /* irqs already disabled. */
+	/* Leverage recent GPs and set GP for new callbacks. */
+	needwake = rcu_advance_cbs(rsp, rnp_root, rdp) ||
+		   rcu_advance_cbs(rsp, rnp_root, my_rdp);
+	rcu_segcblist_merge(&my_rdp->cblist, &rdp->cblist);
+	WARN_ON_ONCE(rcu_segcblist_empty(&my_rdp->cblist) !=
+		     !rcu_segcblist_n_cbs(&my_rdp->cblist));
+	raw_spin_unlock_irqrestore_rcu_node(rnp_root, flags);
+	if (needwake)
+		rcu_gp_kthread_wake(rsp);
+	WARN_ONCE(rcu_segcblist_n_cbs(&rdp->cblist) != 0 ||
+		  !rcu_segcblist_empty(&rdp->cblist),
+		  "rcu_cleanup_dead_cpu: Callbacks on offline CPU %d: qlen=%lu, 1stCB=%p\n",
+		  cpu, rcu_segcblist_n_cbs(&rdp->cblist),
+		  rcu_segcblist_first_cb(&rdp->cblist));
+}
+
+/*
+ * The outgoing CPU has just passed through the dying-idle state,
+ * and we are being invoked from the CPU that was IPIed to continue the
+ * offline operation.  We need to migrate the outgoing CPU's callbacks.
+ */
+void rcutree_migrate_callbacks(int cpu)
+{
+	struct rcu_state *rsp;
+
+	for_each_rcu_flavor(rsp)
+		rcu_migrate_callbacks(cpu, rsp);
+}
+#endif

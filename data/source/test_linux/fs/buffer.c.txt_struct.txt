@@ -1,0 +1,2 @@
+struct bh_lru {struct buffer_head *bhs[BH_LRU_SIZE]; };
+struct bh_accounting {int nr; int ratelimit; };

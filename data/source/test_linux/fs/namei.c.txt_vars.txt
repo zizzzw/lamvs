@@ -1,0 +1,4 @@
+int sysctl_protected_symlinks __read_mostly = 0; 
+int sysctl_protected_hardlinks __read_mostly = 0; 
+const struct inode_operations page_symlink_inode_operations = { 
+.get_link = page_get_link, }; 

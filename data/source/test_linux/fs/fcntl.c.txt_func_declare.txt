@@ -1,0 +1,5 @@
+EXPORT_SYMBOL(__f_setown); 
+EXPORT_SYMBOL(f_setown); 
+static DEFINE_SPINLOCK(fasync_lock); 
+EXPORT_SYMBOL(fasync_helper); 
+EXPORT_SYMBOL(kill_fasync); 

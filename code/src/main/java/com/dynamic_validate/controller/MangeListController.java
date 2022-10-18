@@ -1,7 +1,7 @@
 package com.dynamic_validate.controller;
 
 import com.dynamic_validate.dao.SamlListDao;
-import com.example.dynamic_validate.dao.*;
+import com.dynamic_validate.dao.*;
 import com.dynamic_validate.entity.SamlList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

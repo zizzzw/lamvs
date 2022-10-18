@@ -1,0 +1,1 @@
+extern int rcu_scheduler_active __read_mostly; 

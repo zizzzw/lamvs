@@ -1,0 +1,5 @@
+static inline int atomic_add_negative(int i, atomic_t *v) 
+static inline void atomic_add(int i, atomic_t *v) 
+static inline void atomic_sub(int i, atomic_t *v) 
+static inline void atomic_inc(atomic_t *v) 
+static inline void atomic_dec(atomic_t *v) 

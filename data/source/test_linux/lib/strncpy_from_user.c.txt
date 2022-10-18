@@ -1,0 +1,12 @@
+include/linux/compiler.h
+include/linux/export.h
+include/linux/kasan-checks.h
+include/linux/thread_info.h
+include/linux/uaccess.h
+include/linux/kernel.h
+include/linux/errno.h
+include/asm/byteorder.h
+include/asm/word-at-a-time.h
+static inline long do_strncpy_from_user(char *dst, const char __user *src, long count, unsigned long max) 
+long strncpy_from_user(char *dst, const char __user *src, long count) 
+EXPORT_SYMBOL(strncpy_from_user); 

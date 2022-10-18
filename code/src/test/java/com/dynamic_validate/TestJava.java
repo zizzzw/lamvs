@@ -3,12 +3,21 @@ package com.dynamic_validate;
 import com.dynamic_validate.data.Data;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestJava {
+    @Test
+    public void testPath(){
+        //获取当前项目根目录，获取上一层目录
+        // 参考：https://blog.csdn.net/yswKnight/article/details/103695679
+        String rootPath = System.getProperty("user.dir");
+        String dir = new File(rootPath).getParent() + "\\";
+        System.out.println(dir);
+    }
 
     @Test
     public void testList() {

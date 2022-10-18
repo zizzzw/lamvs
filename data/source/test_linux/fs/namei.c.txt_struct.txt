@@ -1,0 +1,2 @@
+struct nameidata {struct path path; struct qstr last; struct path root; struct inode *inode; unsigned int flags; unsigned seq, m_seq; int  last_type; unsigned depth; int  total_link_count; struct saved { struct path link; struct delayed_call done; const char *name; unsigned seq; };struct filename *name; struct nameidata *saved; struct inode *link_inode; unsigned root_seq; int  dfd; };
+enum {WALK_FOLLOW = 1, WALK_MORE = 2}; 

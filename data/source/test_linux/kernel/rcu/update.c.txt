@@ -1,0 +1,28 @@
+include/linux/types.h
+include/linux/kernel.h
+include/linux/init.h
+include/linux/spinlock.h
+include/linux/smp.h
+include/linux/interrupt.h
+include/linux/sched/signal.h
+include/linux/sched/debug.h
+include/linux/atomic.h
+include/linux/bitops.h
+include/linux/percpu.h
+include/linux/notifier.h
+include/linux/cpu.h
+include/linux/mutex.h
+include/linux/export.h
+include/linux/hardirq.h
+include/linux/delay.h
+include/linux/moduleparam.h
+include/linux/kthread.h
+include/linux/tick.h
+include/linux/rcupdate_wait.h
+include/linux/sched/isolation.h
+?/rcu.h
+void rcu_test_sync_prims(void) 
+void wakeme_after_rcu(struct rcu_head *head) 
+EXPORT_SYMBOL_GPL(wakeme_after_rcu); 
+void __wait_rcu_gp(bool checktiny, int n, call_rcu_func_t *crcu_array, struct rcu_synchronize *rs_array) 
+EXPORT_SYMBOL_GPL(__wait_rcu_gp); 

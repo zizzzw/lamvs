@@ -1,0 +1,27 @@
+static struct rcu_state *const rcu_state_p; 
+static bool dump_tree; 
+static bool rcu_fanout_exact; 
+static int rcu_fanout_leaf = RCU_FANOUT_LEAF; 
+int rcu_num_lvls __read_mostly = RCU_NUM_LVLS; 
+int num_rcu_lvl[] = NUM_RCU_LVL_INIT; 
+int rcu_num_nodes __read_mostly = NUM_RCU_NODES; 
+int sysctl_panic_on_rcu_stall __read_mostly; 
+int rcu_scheduler_active __read_mostly; 
+static int rcu_scheduler_fully_active __read_mostly; 
+static int kthread_prio = IS_ENABLED(CONFIG_RCU_BOOST) ? 1 : 0; 
+static int gp_preinit_delay; 
+static int gp_init_delay; 
+static int gp_cleanup_delay; 
+unsigned long rcutorture_testseq; 
+unsigned long rcutorture_vernum; 
+static DEFINE_PER_CPU(struct rcu_dynticks, rcu_dynticks) = { 
+.dynticks_nesting = 1, .dynticks_nmi_nesting = DYNTICK_IRQ_NONIDLE, .dynticks = ATOMIC_INIT(RCU_DYNTICK_CTRL_CTR), }; 
+static long blimit = DEFAULT_RCU_BLIMIT; 
+static long qhimark = DEFAULT_RCU_QHIMARK; 
+static long qlowmark = DEFAULT_RCU_QLOMARK; 
+static ulong jiffies_till_first_fqs = ULONG_MAX; 
+static ulong jiffies_till_next_fqs = ULONG_MAX; 
+static bool rcu_kick_kthreads; 
+static ulong jiffies_till_sched_qs = HZ / 10; 
+struct workqueue_struct *rcu_gp_wq; 
+struct workqueue_struct *rcu_par_gp_wq; 

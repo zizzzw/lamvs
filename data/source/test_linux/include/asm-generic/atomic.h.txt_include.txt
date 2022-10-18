@@ -1,0 +1,3 @@
+include/asm/cmpxchg.h
+include/asm/barrier.h
+#undef ATOMIC_FETCH_OP #undef ATOMIC_OP_RETURN #undef ATOMIC_OP include/linux/irqflags.h

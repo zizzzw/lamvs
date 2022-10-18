@@ -1,0 +1,2 @@
+EXPORT_SYMBOL_GPL(wakeme_after_rcu); 
+EXPORT_SYMBOL_GPL(__wait_rcu_gp); 

@@ -1,0 +1,2 @@
+struct bdev_inode {struct block_device bdev; struct inode vfs_inode; };
+struct blkdev_dio {union { struct kiocb  *iocb; struct task_struct *waiter; };size_t   size; atomic_t  ref; bool   multi_bio : 1; bool   should_dirty : 1; bool   is_sync : 1; struct bio  bio; };

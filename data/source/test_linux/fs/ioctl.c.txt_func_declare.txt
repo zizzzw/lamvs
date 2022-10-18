@@ -1,0 +1,2 @@
+EXPORT_SYMBOL(fiemap_fill_next_extent); 
+EXPORT_SYMBOL(fiemap_check_flags); 

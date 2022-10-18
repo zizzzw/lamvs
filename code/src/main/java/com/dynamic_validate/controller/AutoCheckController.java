@@ -58,10 +58,10 @@ public class AutoCheckController {
 
         //3 导入demand的txt
         //http://localhost:8080/importDemand
-        //re = dataImportController.importDemand();
-        //if (re.equals("success")) {
-        //    System.out.println("导入demand的txt，成功！");
-        //}
+        re = dataImportController.importDemand();
+        if (re.equals("success")) {
+            System.out.println("导入demand的txt，成功！");
+        }
 
         //4 完善Demand表
         //http://localhost:8080/finishDemand

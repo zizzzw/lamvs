@@ -1,0 +1,29 @@
+include/linux/types.h
+include/linux/compiler.h
+include/linux/atomic.h
+include/linux/irqflags.h
+include/linux/preempt.h
+include/linux/bottom_half.h
+include/linux/lockdep.h
+include/asm/processor.h
+include/linux/cpumask.h
+void call_rcu_bh(struct rcu_head *head, rcu_callback_t func); 
+void call_rcu_sched(struct rcu_head *head, rcu_callback_t func); 
+void synchronize_sched(void); 
+void rcu_barrier_tasks(void); 
+void rcu_init(void); 
+extern int rcu_scheduler_active __read_mostly; 
+void rcu_sched_qs(void); 
+void rcu_bh_qs(void); 
+void rcu_check_callbacks(int user); 
+void rcu_report_dead(unsigned int cpu); 
+void rcutree_migrate_callbacks(int cpu); 
+static inline void rcu_read_lock(void) 
+static inline void rcu_read_unlock(void) 
+static inline void rcu_read_lock_bh(void) 
+static inline void rcu_read_unlock_bh(void) 
+static inline void rcu_read_lock_sched(void) 
+static inline notrace void rcu_read_lock_sched_notrace(void) 
+static inline void rcu_read_unlock_sched(void) 
+static inline notrace void rcu_read_unlock_sched_notrace(void) 
+#endif 

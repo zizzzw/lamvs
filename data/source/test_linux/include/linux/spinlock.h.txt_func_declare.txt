@@ -1,0 +1,4 @@
+extern int _atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock); 
+extern int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock, unsigned long *flags); 
+int alloc_bucket_spinlocks(spinlock_t **locks, unsigned int *lock_mask, size_t max_size, unsigned int cpu_mult, gfp_t gfp); 
+void free_bucket_spinlocks(spinlock_t *locks); 
