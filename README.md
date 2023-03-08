@@ -18,7 +18,7 @@ Data Base: mysql
 **-code:**  
 Java source code of LAMVS.
 
-**-examples:**  【删掉？】
+**-examples:** 
 
 C code of two examples(VFS and QiHang Kernel), tools extract design from here. 
 
